@@ -21,7 +21,7 @@ export class Ship extends Sprite {
     velocity: Vector2;
     
     constructor(x: number, y: number) {
-        super(x, y, '../assets/ship.png');
+        super(x, y, './assets/ship.png');
 
         this.velocity = new Vector2(Math.cos(this.rotation), Math.sin(this.rotation));
     }
