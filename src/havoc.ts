@@ -1,4 +1,5 @@
 import { loop } from './loop';
+import Bus from './bus';
 import { Key } from './keys';
 import { TestState } from './teststate';
 

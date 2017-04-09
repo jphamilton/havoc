@@ -1,10 +1,12 @@
+import screen from './screen';
 import { Key } from './keys';
 import { Vector2 } from './vector2';
 import { Sprite } from './sprite';
-import screen from './screen';
+import { ShipBullet } from './shipbullet';
+import Bus from './bus';
 
 const ACCELERATION: number = 0.1;
-const BULLET_SPEED: number = 1000;
+const BULLET_SPEED: number = 750;
 const BULLET_TIME: number = .1;
 const FRICTION: number = 0.005;
 const ROTATION: number = 5;
@@ -14,17 +16,23 @@ const VELOCITY = 150;
 
 export class Ship extends Sprite {
 
-    private thrusting: boolean;
+    thrusting: boolean;
     private trails: WarpTrail[] = [];
     private trailTime: number = 0;
+    private bulletTime: number = 0;
+    private width2: number;
 
     velocity: Vector2;
     
-    constructor(x: number, y: number) {
-        super(x, y, './assets/ship.png');
+    constructor(x: number, y: number, worldWidth: number, worldHeight: number) {
+        super(x, y, worldWidth, worldHeight, './assets/ship.png');
 
+        // 270°
+        this.rotation = 4.71239;
         this.velocity = new Vector2(Math.cos(this.rotation), Math.sin(this.rotation));
     }
+
+    
 
     update(dt: number) {
         // move ship
@@ -54,6 +62,14 @@ export class Ship extends Sprite {
             this.thrusting = false;
         }
         
+        if (Key.isDown(Key.FIRE)) {
+            this.fire();
+        }
+
+        if (this.bulletTime >= 0) {
+            this.bulletTime -= dt;
+        }
+
         if (this.trailTime > 0) {
             this.trailTime -= dt;
         }
@@ -73,6 +89,67 @@ export class Ship extends Sprite {
         if (!this.thrusting) {
             this.velocity.x -= this.velocity.x * FRICTION;
             this.velocity.y -= this.velocity.y * FRICTION; 
+        }
+    }
+
+    private rotate(point: Point, angle: number) {
+        const x1 = point.x - this.world.x;
+        const y1 = point.y - this.world.y;
+
+        const x2 = x1 * Math.cos(angle) - y1 * Math.sin(angle);
+        const y2 = x1 * Math.sin(angle) + y1 * Math.cos(angle);
+
+        return {
+            x: x2 + this.world.x,
+            y: y2 + this.world.y
+        }
+    }
+
+    private fire() {
+        if (this.bulletTime <= 0) { //} && this.bulletCount < MAX_BULLETS) {
+            
+            this.bulletTime = BULLET_TIME;
+            //this.bulletCount++;
+            
+            const direction = new Vector2(Math.cos(this.rotation), Math.sin(this.rotation));
+            
+            const t = this.width / 2;
+            const right = this.rotate({x: this.world.x + t, y: this.world.y + t}, this.rotation);
+            const left = this.rotate({x: this.world.x + t, y: this.world.y - t}, this.rotation);
+            
+            const rightBullet = new ShipBullet(right.x, right.y, this.worldWidth, this.worldHeight, 1);
+            rightBullet.rotation = this.rotation;
+            rightBullet.velocity = direction;
+
+            const leftBullet = new ShipBullet(left.x, left.y, this.worldWidth, this.worldHeight, 1);
+            leftBullet.rotation = this.rotation;
+            leftBullet.velocity = direction;
+
+            const speed = this.velocity.magnitude + BULLET_SPEED;
+            leftBullet.velocity = leftBullet.velocity.scale(speed, speed);
+            rightBullet.velocity = rightBullet.velocity.scale(speed, speed);
+            
+            let v = this.velocity.add(leftBullet.velocity);
+            
+            v.x /= 2;
+            v.y /= 2;
+            
+            leftBullet.velocity.x += v.x;
+            leftBullet.velocity.y += v.y;
+
+            rightBullet.velocity.x += v.x;
+            rightBullet.velocity.y += v.y;
+
+            // kick back
+            const kba = (this.rotation + Math.PI) % (Math.PI * 2);
+            const kbv = new Vector2(Math.cos(kba), Math.sin(kba)).scale(5,5);
+
+            this.world.x += kbv.x;
+            this.world.y += kbv.y;
+            
+            Bus.send(Bus.Messages.ShipBulletFired, leftBullet);
+            Bus.send(Bus.Messages.ShipBulletFired, rightBullet);
+            
         }
     }
 
@@ -102,8 +179,6 @@ export class Ship extends Sprite {
 }
 
 class WarpTrail extends PIXI.Sprite {
-
-
     constructor(ship: Ship) {
         super(ship.texture);
 
@@ -111,7 +186,7 @@ class WarpTrail extends PIXI.Sprite {
         this.rotation = ship.rotation;
         this.x = ship.x;
         this.y = ship.y;
-        this.blendMode = PIXI.BLEND_MODES.COLOR_DODGE;
+        this.scale = ship.scale;
         this.alpha = .4;
 
         screen.stage.addChild(this);

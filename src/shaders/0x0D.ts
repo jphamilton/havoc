@@ -1,5 +1,13 @@
 // based on https://github.com/Blokatt/0x0D
+
 export const Shader = {
+
+    uniforms: {
+        time: {
+            type: '1f',
+            value: 0.0
+        }
+    },
 
     vertex: `
         attribute vec2 aVertexPosition;

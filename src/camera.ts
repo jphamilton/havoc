@@ -4,8 +4,6 @@ export class Camera  {
     x: number;
     y: number;
 
-    lerpAmount = 1.0;
-
     private cameraWidth: number;
     private cameraHeight: number;
     private worldWidth: number;
@@ -149,9 +147,12 @@ export class Camera  {
                 if (obj.world.x >= region.left && obj.world.x <= region.right && obj.world.y >= region.top && obj.world.y <= region.bottom) {
                     
                     // translate object to screen coordinates using camera top, left
+                    //obj.x = obj.world.x - (this.left * obj.depth);
+                    //obj.y = obj.world.y - (this.top * obj.depth);
                     obj.x = obj.world.x - this.left;
                     obj.y = obj.world.y - this.top;
 
+                    
                     // if object is "offscreen" then wrap it
                     if (obj.x < 0) {
                         obj.x += this.worldWidth;
@@ -171,11 +172,6 @@ export class Camera  {
         return results;
     }
 
-    follow(obj: ISprite) {
-        this.following = obj;
-        // TODO: should we do this in world update instead???
-    }
-
     private lerp(a, b, t) {
         return (a * t) + ((1.0 - t) * b);
     };
@@ -185,11 +181,11 @@ export class Camera  {
     }
 
     update(dt: number) {
-        let dx = this.lerp2(this.x, this.following.world.x);
-        let dy = this.lerp2(this.y, this.following.world.y);
+        // let dx = this.lerp2(this.x, this.following.world.x);
+        // let dy = this.lerp2(this.y, this.following.world.y);
 
-        this.x += dx;
-        this.y += dy;
+        // this.x += dx;
+        // this.y += dy;
     }
 
     

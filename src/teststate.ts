@@ -8,7 +8,7 @@ export class TestState implements IUpdateRender {
     paused: boolean = false;
 
     constructor() {
-        this.world = new World(screen.width * 2, screen.height * 2);
+        this.world = new World(screen.width * 3, screen.height * 3);
     }
 
     update(dt: number) {

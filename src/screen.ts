@@ -6,7 +6,7 @@ export class Screen {
     height: number;
     renderer: PIXI.WebGLRenderer;
     stage: PIXI.Container;
-
+    
     constructor() {
         this.init();
 
