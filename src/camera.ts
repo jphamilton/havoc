@@ -147,8 +147,6 @@ export class Camera  {
                 if (obj.world.x >= region.left && obj.world.x <= region.right && obj.world.y >= region.top && obj.world.y <= region.bottom) {
                     
                     // translate object to screen coordinates using camera top, left
-                    //obj.x = obj.world.x - (this.left * obj.depth);
-                    //obj.y = obj.world.y - (this.top * obj.depth);
                     obj.x = obj.world.x - this.left;
                     obj.y = obj.world.y - this.top;
 
@@ -171,22 +169,5 @@ export class Camera  {
 
         return results;
     }
-
-    private lerp(a, b, t) {
-        return (a * t) + ((1.0 - t) * b);
-    };
-    
-    lerp2(current, target) {
-        return (target - current) * 0.1;
-    }
-
-    update(dt: number) {
-        // let dx = this.lerp2(this.x, this.following.world.x);
-        // let dy = this.lerp2(this.y, this.following.world.y);
-
-        // this.x += dx;
-        // this.y += dy;
-    }
-
     
 }

@@ -10,7 +10,7 @@ const BULLET_SPEED: number = 750;
 const BULLET_TIME: number = .1;
 const FRICTION: number = 0.005;
 const ROTATION: number = 5;
-const MAX_ACCELERATION: number = 2000;
+const MAX_ACCELERATION: number = 1500;
 const MAX_BULLETS: number = 10;
 const VELOCITY = 150;
 

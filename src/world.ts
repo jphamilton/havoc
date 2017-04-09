@@ -17,6 +17,9 @@ export class World implements IUpdateRender, Rect {
     private filter: PIXI.Filter;
     private camera: Camera;    
     
+    private farLayer: ISprite[] = [];
+    private midLayer: ISprite[] = [];
+
     private stars: Star[] = [];
     private ship: Ship;
     private shipBullets: ShipBullet[] = [];
@@ -38,7 +41,6 @@ export class World implements IUpdateRender, Rect {
         this.graphics.drawRect(0, 0, this.width, this.height);
         this.graphics.endFill();
 
-        
         const background = new PIXI.Sprite(this.graphics.generateCanvasTexture());
         screen.stage.addChild(background);
         screen.stage.addChild(this.graphics);
@@ -48,11 +50,18 @@ export class World implements IUpdateRender, Rect {
         screen.stage.addChild(this.ship);
 
         // create some random stars
-        for(let i = 0; i < 100; i++) {
+        for(let i = 0; i < 200; i++) {
             const x = random(0, this.width);
             const y = random(0, this.height);
             const star = new Star(x, y, this.width, this.height);
             this.stars.push(star);
+
+            if (star.alpha <= .4) {
+                this.farLayer.push(star);
+            } else if (star.alpha < .7) {
+                this.midLayer.push(star);
+            }
+
             screen.stage.addChild(star);
         }
 
@@ -132,6 +141,22 @@ export class World implements IUpdateRender, Rect {
         
         this.camera.x += dx;
         this.camera.y += dy;
+
+        this.farLayer.forEach(o => {
+
+            o.world.x += dx * .5;
+            o.world.y += dy * .5;
+
+            this.checkWrap(o);
+        });
+
+        this.midLayer.forEach(o => {
+
+            o.world.x += dx * .2;
+            o.world.y += dy * .2;
+
+            this.checkWrap(o);
+        });
     }
 
     render(dt: number) {
@@ -163,11 +188,27 @@ export class World implements IUpdateRender, Rect {
         const mx = this.ship.world.x * this.mapScaleX;
         const my = this.ship.world.y * this.mapScaleY;
 
-        this.graphics.lineStyle(1, 0xFFFFFF, 1);
+        this.graphics.lineStyle(1, 0x00FFFF, .5);
         this.graphics.drawRect(rx + mx, ry + my, 2, 2);
 
         screen.render();
     }
 
-    
+    private checkWrap(o: ISprite) {
+        if (o.world.x > this.width) {
+            o.world.x -= this.width;
+        }
+
+        if (o.world.x < 0) {
+            o.world.x += this.width;
+        }
+
+        if (o.world.y > this.height) {
+            o.world.y -= this.height;
+        }
+
+        if (o.world.y < 0) {
+            o.world.y += this.height;
+        }
+    }
 }
