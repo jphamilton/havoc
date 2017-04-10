@@ -37,7 +37,7 @@ export class Camera  {
     // left, top, right, bottom - 
     // Assumes that whatever the camera is tracking will wrap
     // the world when it goes out of bounds.
-    private get left() {
+    get left() {
         let result = this.x - this.offsetX;
         if (result < 0) {
             result += this.worldWidth;
@@ -45,7 +45,7 @@ export class Camera  {
         return result;
     }
 
-    private get top() {
+    get top() {
         let result = this.y - this.offsetY;
         if (result < 0) {
             result += this.worldHeight;
@@ -53,11 +53,11 @@ export class Camera  {
         return result;
     }
 
-    private get right() {
+    get right() {
         return this.left + this.cameraWidth;
     }
 
-    private get bottom() {
+    get bottom() {
         return this.top + this.cameraHeight;
     }
 
@@ -170,4 +170,16 @@ export class Camera  {
         return results;
     }
     
+    follow(x: number, y: number, lerp: Function) {
+        const dx = lerp(this.x, x, .1);
+        const dy = lerp(this.y, y, .1);
+
+        this.x += dx;
+        this.y += dy;
+
+        return {
+            x: dx,
+            y: dy
+        }
+    }
 }

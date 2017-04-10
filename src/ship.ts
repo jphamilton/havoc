@@ -154,26 +154,8 @@ export class Ship extends Sprite {
     }
 
     private thrust() {
-        const v = new Vector2(Math.cos(this.rotation) * VELOCITY * ACCELERATION, Math.sin(this.rotation) * VELOCITY * ACCELERATION);
-
-        this.velocity.x += v.x;
-        this.velocity.y += v.y;
-
-        if (this.velocity.x > MAX_ACCELERATION) {
-            this.velocity.x = MAX_ACCELERATION;
-        } 
-
-        if (this.velocity.x < -MAX_ACCELERATION) {
-            this.velocity.x = -MAX_ACCELERATION;
-        }
-
-        if (this.velocity.y > MAX_ACCELERATION) {
-            this.velocity.y = MAX_ACCELERATION;
-        }
-
-        if (this.velocity.y < -MAX_ACCELERATION) {
-            this.velocity.y = -MAX_ACCELERATION;
-        }
+        const v = this.velocity.accelerate(this.rotation, VELOCITY, ACCELERATION, MAX_ACCELERATION);
+        this.velocity = v;
     }
 
 }

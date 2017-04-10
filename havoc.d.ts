@@ -32,5 +32,4 @@ interface ISprite extends IWorld {
     x: number;
     y: number;
     visible: boolean;
-    depth: number;
 }

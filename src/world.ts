@@ -1,69 +1,56 @@
 import * as PIXI from 'pixi.js';
 import screen from './screen';
 import Bus from './bus';
-
-import { random } from './util';
-import { Camera } from './camera';
-import { Star } from './star';
-import { Ship } from './ship';
-import { ShipBullet } from './shipbullet';
 import { Shader } from './shaders/0x0D';
 
-const MapWidth: number = 150;
-const MapHeight: number = 150;
+import { random, wrap, lerp } from './util';
+import { Camera } from './camera';
+import { Background } from './background';
+import { StarField } from './starfield';
+import { Ship } from './ship';
+import { ShipBullet } from './shipbullet';
+import { Score } from './score';
+import { HUD } from './hud';
 
 export class World implements IUpdateRender, Rect {
     private graphics: PIXI.Graphics;
     private filter: PIXI.Filter;
     private camera: Camera;    
     
-    private farLayer: ISprite[] = [];
-    private midLayer: ISprite[] = [];
-
-    private stars: Star[] = [];
+    
+    private background: Background;
     private ship: Ship;
     private shipBullets: ShipBullet[] = [];
-    
-    private time: number = 0;
+    private score: Score;
+    private starField: StarField;
+    private hud: HUD;
 
-    private mapScaleX: number;
-    private mapScaleY: number;
+    private time: number = 0;
 
     constructor(public width: number, public height: number) {
 
-        this.mapScaleX = MapWidth / this.width;
-        this.mapScaleY = MapHeight / this.height;
-    
         // create background
         this.graphics = new PIXI.Graphics();
         this.graphics.clear();
-        this.graphics.beginFill(0x001111, .5);
-        this.graphics.drawRect(0, 0, this.width, this.height);
-        this.graphics.endFill();
-
-        const background = new PIXI.Sprite(this.graphics.generateCanvasTexture());
-        screen.stage.addChild(background);
+        
         screen.stage.addChild(this.graphics);
+
+        this.background = new Background(this.graphics, width, height);
 
         // create ship at the center of the world
         this.ship = new Ship(width / 2, height / 2, this.width, this.height);
         screen.stage.addChild(this.ship);
 
-        // create some random stars
-        for(let i = 0; i < 200; i++) {
-            const x = random(0, this.width);
-            const y = random(0, this.height);
-            const star = new Star(x, y, this.width, this.height);
-            this.stars.push(star);
+        // stars!
+        this.starField = new StarField(this.width, this.height);
 
-            if (star.alpha <= .4) {
-                this.farLayer.push(star);
-            } else if (star.alpha < .7) {
-                this.midLayer.push(star);
-            }
+        // score
+        this.score = new Score();
+        this.score.x = 80;
+        this.score.y = 10;
 
-            screen.stage.addChild(star);
-        }
+        // heads up display
+        this.hud = new HUD(this.graphics, this.width, this.height);
 
         //Create our Pixi filter using our custom shader code
         this.filter = new PIXI.Filter(Shader.vertex, Shader.fragment, Shader.uniforms);
@@ -103,10 +90,6 @@ export class World implements IUpdateRender, Rect {
         return this.height;
     }
 
-    lerp2(current, target, amount) {
-        return (target - current) * amount;
-    }
-
     update(dt: number) {
         this.time++;
 
@@ -135,33 +118,14 @@ export class World implements IUpdateRender, Rect {
             this.camera.y += this.height;
         }
 
-       
-        const dx = this.lerp2(this.camera.x, this.ship.world.x, .1);
-        const dy = this.lerp2(this.camera.y, this.ship.world.y, .1);
         
-        this.camera.x += dx;
-        this.camera.y += dy;
+        const delta = this.camera.follow(this.ship.world.x, this.ship.world.y, lerp);
 
-        this.farLayer.forEach(o => {
-
-            o.world.x += dx * .5;
-            o.world.y += dy * .5;
-
-            this.checkWrap(o);
-        });
-
-        this.midLayer.forEach(o => {
-
-            o.world.x += dx * .2;
-            o.world.y += dy * .2;
-
-            this.checkWrap(o);
-        });
+        this.starField.move(delta.x, delta.y);
     }
 
     render(dt: number) {
-        const all = [this.ship,...this.shipBullets, ...this.stars];
-
+        const all = [this.ship,...this.shipBullets, ...this.starField.stars];
         
         // hide all objects
         all.forEach(obj => obj.visible = false);
@@ -172,43 +136,16 @@ export class World implements IUpdateRender, Rect {
         // show visible objects
         visible.forEach(obj => obj.visible = true);
 
+        // update time for CRT effect
         this.filter.uniforms.time = this.time * 0.5;
 
         this.graphics.clear();
 
-        // radar
-        const size = 150;
-        const margin = 10;
-        const rx = screen.width - size - margin;
-        const ry = screen.height - size - margin;
-        this.graphics.lineStyle(1, 0xFFFFFF, .1);
-        this.graphics.drawRect(rx, ry, 150, 150);
-
-        
-        const mx = this.ship.world.x * this.mapScaleX;
-        const my = this.ship.world.y * this.mapScaleY;
-
-        this.graphics.lineStyle(1, 0x00FFFF, .5);
-        this.graphics.drawRect(rx + mx, ry + my, 2, 2);
+        this.hud.update();
+        this.hud.track(this.ship, 0x00FFFF, .5);
 
         screen.render();
     }
 
-    private checkWrap(o: ISprite) {
-        if (o.world.x > this.width) {
-            o.world.x -= this.width;
-        }
-
-        if (o.world.x < 0) {
-            o.world.x += this.width;
-        }
-
-        if (o.world.y > this.height) {
-            o.world.y -= this.height;
-        }
-
-        if (o.world.y < 0) {
-            o.world.y += this.height;
-        }
-    }
+    
 }
