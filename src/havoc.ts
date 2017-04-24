@@ -1,7 +1,8 @@
 import { loop } from './loop';
 import Bus from './bus';
 import { Key } from './keys';
-import { TestState } from './teststate';
+import { GameState } from './states/game';
+import { AttractState } from './states/attract';
 
 class Havoc implements IUpdateRender {
 
@@ -12,7 +13,7 @@ class Havoc implements IUpdateRender {
     }
 
     init() {
-        this.state = new TestState();
+        this.state = new AttractState();
     }
 
     update(dt: number) {
@@ -21,7 +22,7 @@ class Havoc implements IUpdateRender {
 
     render(dt: number) {
         this.state.render(dt);
-        Key.update();
+        Key.reset();
     }
 
 }

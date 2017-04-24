@@ -1,8 +1,9 @@
 import * as PIXI from 'pixi.js';
-import screen from './screen';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from './2d';
 
 const MapWidth: number = 150;
 const MapHeight: number = 150;
+const Margin: number = 10;
 
 export class HUD {
 
@@ -12,16 +13,9 @@ export class HUD {
     private mapScaleY: number;
     
     constructor(private graphics: PIXI.Graphics, private worldWidth: number, private worldHeight: number) {
-
-        const size = 150;
-        const margin = 10;
+        this.x  = SCREEN_WIDTH - MapWidth - Margin;
+        this.y = SCREEN_HEIGHT - MapHeight - Margin;
         
-        this.x  = screen.width - size - margin;
-        this.y = screen.height - size - margin;
-        
-        // graphics.lineStyle(1, 0xFFFFFF, .1);
-        // graphics.drawRect(this.x, this.y, 150, 150);
-
         this.mapScaleX = MapWidth / worldWidth;
         this.mapScaleY = MapHeight / worldHeight;
     }

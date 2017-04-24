@@ -1,33 +1,55 @@
-import screen from './screen';
+import { scene2d } from './2d';
 import { Star } from './star';
-import { random, wrap } from './util';
+import { random, random_array, wrap } from './util';
+
 
 export class StarField {
 
     stars: Star[] = [];
+    private base: PIXI.BaseTexture;
+    private types: PIXI.Texture[] = [];
     private farLayer: ISprite[] = [];
     private midLayer: ISprite[] = [];
+    private nearLayer: ISprite[] = [];
     
     constructor(private worldWidth: number, private worldHeight: number) {
         
+        this.base = PIXI.BaseTexture.fromImage('./assets/stars-16x4.png').once('update', () => {
+            this.types = [
+                new PIXI.Texture(this.base, new PIXI.Rectangle(0, 0, 4, 4)),
+                new PIXI.Texture(this.base, new PIXI.Rectangle(4, 0, 4, 4)),
+                new PIXI.Texture(this.base, new PIXI.Rectangle(8, 0, 4, 4)),
+                new PIXI.Texture(this.base, new PIXI.Rectangle(12, 0, 4, 4))
+            ];
+
+            this.init();
+        });
+
+    }
+
+    private init() {
+        const alphas = [.1, .2, .3, .4, .5, .6, .7, .8, .9, 1];
+
         // create some random stars
         for(let i = 0; i < 200; i++) {
-            const x = random(0, worldWidth);
-            const y = random(0, worldHeight);
-            const star = new Star(x, y, worldWidth, worldHeight);
+            const x = random(0, this.worldWidth);
+            const y = random(0, this.worldHeight);
+            const texture = random_array(this.types);
+            const alpha = random_array(alphas);
+            const star = new Star(x, y, this.worldWidth, this.worldHeight, texture, alpha);
             
             this.stars.push(star);
 
             if (star.alpha <= .4) {
                 this.farLayer.push(star);
-            } else if (star.alpha < .7) {
+            } else if (star.alpha <= .7) {
                 this.midLayer.push(star);
+            } else {
+                this.nearLayer.push(star);
             }
 
-            screen.stage.addChild(star);
+            scene2d.addChild(star);
         }
-
-
     }
 
     move(x: number, y: number) {
@@ -44,6 +66,13 @@ export class StarField {
         });
 
         wrap(this.worldWidth, this.worldHeight, ...this.midLayer);
+
+        this.nearLayer.forEach(o => {
+            o.world.x += x * .1;
+            o.world.y += y * .1;
+        });
+
+        wrap(this.worldWidth, this.worldHeight, ...this.nearLayer);
         
     }
 }

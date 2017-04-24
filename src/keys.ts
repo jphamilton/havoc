@@ -34,7 +34,7 @@ export class _Key {
         }
     }
 
-    update() {
+    reset() {
         for (let i = 0; i < LEN; i++) {
             this.prev[i] = this.keys[i];
         }

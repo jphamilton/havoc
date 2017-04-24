@@ -1,14 +1,14 @@
-import { Key } from './keys';
-import { World } from './world';
-import screen from './screen';
+import { Key } from '../keys';
+import { World } from '../world';
 
-export class TestState implements IUpdateRender {
+
+export class GameState implements IUpdateRender {
 
     world: World;
     paused: boolean = false;
 
     constructor() {
-        this.world = new World(screen.width * 4, screen.height * 4);
+        this.world = new World();
     }
 
     update(dt: number) {

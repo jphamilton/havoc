@@ -1,18 +1,18 @@
 import { Graphics } from 'pixi.js';
-import screen from './screen';
+import { scene2d } from './2d';
 
 // CRT background
 export class Background {
 
     private background: PIXI.Sprite;
 
-    constructor(graphics: Graphics, worldWidth: number, worldHeight: number) {
+    constructor(graphics: Graphics) {
         graphics.beginFill(0x001111, .5);
-        graphics.drawRect(0, 0, worldWidth, worldHeight);
+        graphics.drawRect(0, 0, screen.width, screen.height);
         graphics.endFill();
 
         this.background = new PIXI.Sprite(graphics.generateCanvasTexture());
-        screen.stage.addChild(this.background);
+        scene2d.addChild(this.background);
     }
 
 

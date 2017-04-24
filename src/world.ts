@@ -1,11 +1,12 @@
 import * as PIXI from 'pixi.js';
-import screen from './screen';
+import { canvas2d, scene2d, SCREEN_WIDTH, SCREEN_HEIGHT } from './2d';
 import Bus from './bus';
 import { Shader } from './shaders/0x0D';
 
 import { random, wrap, lerp } from './util';
 import { Camera } from './camera';
 import { Background } from './background';
+import { Asteroids } from './asteroids';
 import { StarField } from './starfield';
 import { Ship } from './ship';
 import { ShipBullet } from './shipbullet';
@@ -13,12 +14,15 @@ import { Score } from './score';
 import { HUD } from './hud';
 
 export class World implements IUpdateRender, Rect {
+    width: number;
+    height: number;
+
     private graphics: PIXI.Graphics;
     private filter: PIXI.Filter;
     private camera: Camera;    
     
-    
     private background: Background;
+    private asteroids: Asteroids;
     private ship: Ship;
     private shipBullets: ShipBullet[] = [];
     private score: Score;
@@ -27,22 +31,27 @@ export class World implements IUpdateRender, Rect {
 
     private time: number = 0;
 
-    constructor(public width: number, public height: number) {
+    constructor() {
+        this.width = SCREEN_WIDTH * 4;
+        this.height = SCREEN_HEIGHT * 4;
 
         // create background
         this.graphics = new PIXI.Graphics();
         this.graphics.clear();
         
-        screen.stage.addChild(this.graphics);
+        scene2d.addChild(this.graphics);
 
-        this.background = new Background(this.graphics, width, height);
+        this.background = new Background(this.graphics);
 
         // create ship at the center of the world
-        this.ship = new Ship(width / 2, height / 2, this.width, this.height);
-        screen.stage.addChild(this.ship);
+        this.ship = new Ship(this.width / 2, this.height / 2, this.width, this.height);
+        scene2d.addChild(this.ship);
 
         // stars!
         this.starField = new StarField(this.width, this.height);
+
+        // asteroids!
+        this.asteroids = new Asteroids(this.width, this.height);
 
         // score
         this.score = new Score();
@@ -55,19 +64,19 @@ export class World implements IUpdateRender, Rect {
         //Create our Pixi filter using our custom shader code
         this.filter = new PIXI.Filter(Shader.vertex, Shader.fragment, Shader.uniforms);
         
-        screen.stage.filters = [this.filter];
+        scene2d.filters = [this.filter];
 
-        this.camera = new Camera(this.ship.world.x, this.ship.world.y, screen.width, screen.height, width, height);    
+        this.camera = new Camera(this.ship.world.x, this.ship.world.y, SCREEN_WIDTH, SCREEN_HEIGHT, this.width, this.height);    
         
         // subscribe to messages
         Bus.subscribe(Bus.Messages.ShipBulletFired, (bullet:ShipBullet) => {
             this.shipBullets.push(bullet);
-            screen.stage.addChild(bullet);
+            scene2d.addChild(bullet);
         });
 
         Bus.subscribe(Bus.Messages.ShipBulletExpired, (bullet: ShipBullet) => {
             this.shipBullets = this.shipBullets.filter(x => x !== bullet);
-            screen.stage.removeChild(bullet);
+            scene2d.removeChild(bullet);
             bullet.destroy();
         });
 
@@ -96,6 +105,7 @@ export class World implements IUpdateRender, Rect {
         // move objects and stuff around the world here
         this.ship.update(dt);
         this.shipBullets.forEach(bullet => bullet.update(dt));
+        this.asteroids.update(dt);
 
         // wrap ship if necessary
         if (this.ship.world.x > this.width) {
@@ -125,7 +135,7 @@ export class World implements IUpdateRender, Rect {
     }
 
     render(dt: number) {
-        const all = [this.ship,...this.shipBullets, ...this.starField.stars];
+        const all = [this.ship,...this.shipBullets, ...this.starField.stars, ...this.asteroids.asteroids];
         
         // hide all objects
         all.forEach(obj => obj.visible = false);
@@ -143,8 +153,9 @@ export class World implements IUpdateRender, Rect {
 
         this.hud.update();
         this.hud.track(this.ship, 0x00FFFF, .5);
+        this.asteroids.asteroids.forEach(a => this.hud.track(a, 0x00FFFF, .3));
 
-        screen.render();
+        canvas2d.render(scene2d);
     }
 
     

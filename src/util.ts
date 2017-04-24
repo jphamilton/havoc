@@ -6,6 +6,10 @@ export function randomf(start, end) {
     return Math.random() * (end - start) + start;
 }
 
+export function random_array<T>(array: T[]) {
+    return array[random(0, array.length - 1)];
+}
+
 export function wrap(worldWidth: number, worldHeight: number, ...args: ISprite[]) {
     
     args.forEach(o => {

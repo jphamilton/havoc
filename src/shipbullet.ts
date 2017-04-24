@@ -1,6 +1,10 @@
+import * as PIXI from 'pixi.js';
 import Bus from './bus';
 import { Sprite } from './sprite';
 import { Vector2 } from './vector2';
+import { random } from './util';
+
+const shipBulletTexture = PIXI.Texture.fromImage('./assets/ship-bullet.png');
 
 export class ShipBullet extends Sprite {
     
@@ -9,9 +13,9 @@ export class ShipBullet extends Sprite {
     private life: number;
 
     constructor(x: number, y: number, worldWidth: number, worldHeight: number, lifeInSeconds: number) {
-        super(x, y, worldWidth, worldHeight, './assets/ship-bullet.png');
+        super(x, y, worldWidth, worldHeight, shipBulletTexture);
         this.life = lifeInSeconds;
-        this.anchor.set(.5, .5)
+        this.anchor.set(.5, .5);
     }
     
     update(dt: number) {
@@ -19,7 +23,7 @@ export class ShipBullet extends Sprite {
 
         this.life -= dt;
 
-        if (this.life <= 0) {
+        if (this.life <= 0 || !this.visible) {
             Bus.send(Bus.Messages.ShipBulletExpired, this);
         }
     }

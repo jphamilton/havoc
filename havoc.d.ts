@@ -1,5 +1,8 @@
-interface IUpdateRender {
+interface IUpdate {
     update: (step: number) => void;
+}
+
+interface IUpdateRender extends IUpdate {
     render: (dt?: number) => void;
 }
 

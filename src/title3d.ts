@@ -1,0 +1,57 @@
+import * as THREE from 'three';
+import { scene3d, camera3d, canvas3d } from './3d';
+
+export class Title3d implements IUpdate {
+
+    private title: THREE.Mesh;
+    private titleBox: any;
+    private titlePivot: any;
+
+    constructor() {
+        this.init();
+    }
+
+    private init(): void {
+        const loader = new THREE.JSONLoader();
+        
+        loader.load('./assets/havoc.json',
+            ( geometry, materials ) => {
+
+                const material = new THREE.MeshBasicMaterial( {
+                    color: 0x000000, 
+                    transparent: false, 
+                    shading: THREE.FlatShading,
+                    polygonOffset: true,
+                    polygonOffsetFactor: 1,
+                    polygonOffsetUnits: 1
+                });
+
+                this.title = new THREE.Mesh(geometry, material);
+
+                const edgeGeometry = new THREE.EdgesGeometry(this.title.geometry as any, 10); 
+                const lineMaterial = new THREE.LineBasicMaterial( { color: 0x00FFFF, linewidth: 4, transparent: false } );
+                const wireframe = new THREE.LineSegments( edgeGeometry, lineMaterial );
+
+                this.title.add( wireframe );
+
+                this.titleBox = new THREE.Box3().setFromObject(this.title);
+                this.titleBox.center(this.title.position);
+                this.title.position.multiplyScalar( - 1 );
+
+                this.titlePivot = new THREE.Group();
+                scene3d.add(this.titlePivot);
+                this.titlePivot.add(this.title);
+            }
+        );
+    }
+
+    update(dt: number) {
+        if (this.titlePivot) {
+            this.titlePivot.rotation.x += .01;
+            this.titlePivot.rotation.y += .01;
+            this.titlePivot.rotation.z += .01;
+        }
+    }
+
+    
+}

@@ -1,4 +1,4 @@
-import screen from './screen';
+import { scene2d } from './2d';
 import { Key } from './keys';
 import { Vector2 } from './vector2';
 import { Sprite } from './sprite';
@@ -14,6 +14,8 @@ const MAX_ACCELERATION: number = 1500;
 const MAX_BULLETS: number = 10;
 const VELOCITY = 150;
 
+const shipTexture = PIXI.Texture.fromImage('./assets/ship2.png');
+
 export class Ship extends Sprite {
 
     thrusting: boolean;
@@ -22,10 +24,8 @@ export class Ship extends Sprite {
     private bulletTime: number = 0;
     private width2: number;
 
-    velocity: Vector2;
-    
     constructor(x: number, y: number, worldWidth: number, worldHeight: number) {
-        super(x, y, worldWidth, worldHeight, './assets/ship.png');
+        super(x, y, worldWidth, worldHeight, shipTexture);
 
         // 270°
         this.rotation = 4.71239;
@@ -62,7 +62,11 @@ export class Ship extends Sprite {
             this.thrusting = false;
         }
         
-        if (Key.isDown(Key.FIRE)) {
+        if (Key.isPressed(Key.DOWN)) {
+            this.velocity = this.velocity.normalize();
+        }
+
+        if (Key.isPressed(Key.FIRE)) {
             this.fire();
         }
 
@@ -171,14 +175,14 @@ class WarpTrail extends PIXI.Sprite {
         this.scale = ship.scale;
         this.alpha = .4;
 
-        screen.stage.addChild(this);
+        scene2d.addChild(this);
     }
 
     update(dt: number) {
         this.alpha -= 0.01;
 
         if (this.alpha <= 0) {
-            screen.stage.removeChild(this);
+            scene2d.removeChild(this);
             this.destroy();
         }
     }

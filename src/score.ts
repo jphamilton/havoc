@@ -1,4 +1,4 @@
-import screen from './screen';
+import { scene2d } from './2d';
 import * as PIXI from 'pixi.js';
 
 export class Score {
@@ -26,10 +26,10 @@ export class Score {
             align : 'right'}
         );
 
-        this.score2.alpha = .15;
+        this.score2.alpha = .1;
         
-        screen.stage.addChild(this.score1);
-        screen.stage.addChild(this.score2);
+        scene2d.addChild(this.score1);
+        scene2d.addChild(this.score2);
     }
 
     get x(): number {

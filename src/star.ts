@@ -1,12 +1,12 @@
-import { randomf } from './util';
+import * as PIXI from 'pixi.js';
 import { Sprite } from './sprite';
 
 export class Star extends Sprite {
     
-    constructor(x: number, y: number, worldWidth: number, worldHeight: number) {
-        super(x, y, worldWidth, worldHeight, './assets/star-4x4.png');
+    constructor(x: number, y: number, worldWidth: number, worldHeight: number, texture: PIXI.Texture, alpha: number) {
+        super(x, y, worldWidth, worldHeight, texture);
         
-        this.alpha = randomf(.05, 1.0);
+        this.alpha = alpha;
     }
     
 }
