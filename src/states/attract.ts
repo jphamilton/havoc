@@ -62,9 +62,9 @@ export class AttractState implements IUpdateRender {
         this.score.y = 10;
 
         // push start
-        this.pushStart = new Text('PUSH START', 64);
+        this.pushStart = new Text('I N S E R T  C O I N', 64);
         this.pushStart.y = (SCREEN_HEIGHT / 4) * 3;
-        this.pushStart.x = (SCREEN_WIDTH / 2) - (this.pushStart.width / 2);
+        this.pushStart.x = (SCREEN_WIDTH / 2) - (this.pushStart.width / 2) - 100;
         
         const changeStarVector = () => {
             const angle = randomf(0, Math.PI * 2);
@@ -78,7 +78,7 @@ export class AttractState implements IUpdateRender {
             this.pushStart.visible = !this.pushStart.visible;
         });
 
-        this.timers.add({ seconds: 5}, () => {
+        this.timers.add({ seconds: 10}, () => {
             changeStarVector();
         });
 
