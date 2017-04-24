@@ -82,7 +82,7 @@ export class AttractState implements IUpdateRender {
             changeStarVector();
         });
 
-        this.timers.add({delay: 2, seconds: 10}, () => {
+        this.timers.add({delay: 2, seconds: 20}, () => {
             rumble.play();
         });
 
@@ -90,7 +90,7 @@ export class AttractState implements IUpdateRender {
             fx1.play();
         });
 
-        this.timers.add({delay: 10, seconds: 10}, () => {
+        this.timers.add({delay: 8, seconds: 10}, () => {
             fx2.play();
         });
 
