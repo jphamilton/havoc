@@ -60,7 +60,6 @@ export class StarField {
                 this.nearLayer.push(star);
             }
 
-            console.log('adding star');
             scene2d.addChild(star);
         }
     }

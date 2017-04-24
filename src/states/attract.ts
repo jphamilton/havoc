@@ -71,7 +71,7 @@ export class AttractState implements IUpdateRender {
         this.graphics = new PIXI.Graphics();
         this.graphics.clear();
         scene2d.addChild(this.graphics);
-        this.background = new Background(this.graphics);
+        this.background = new Background(this.graphics, 0x001111, .2);
 
         // shader
         this.filter = new PIXI.Filter(Shader.vertex, Shader.fragment, Shader.uniforms);

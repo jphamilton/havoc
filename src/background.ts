@@ -6,8 +6,8 @@ export class Background {
 
     private background: PIXI.Sprite;
 
-    constructor(graphics: Graphics) {
-        graphics.beginFill(0x001111, .5);
+    constructor(graphics: Graphics, color: number, alpha: number) {
+        graphics.beginFill(color, alpha);
         graphics.drawRect(0, 0, screen.width, screen.height);
         graphics.endFill();
 

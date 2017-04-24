@@ -39,7 +39,7 @@ export class World implements IUpdateRender, Rect {
         this.graphics = new PIXI.Graphics();
         this.graphics.clear();
         scene2d.addChild(this.graphics);
-        this.background = new Background(this.graphics);
+        this.background = new Background(this.graphics, 0x001111, .5);
 
         // create ship at the center of the world
         this.ship = new Ship(this.width / 2, this.height / 2, this.width, this.height);
