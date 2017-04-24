@@ -7,6 +7,7 @@ Old school space battle (work in progress)
 
 ## Controls
 Arrow keys to move
+CTRL to fire
 
 ## Screenshots
 
