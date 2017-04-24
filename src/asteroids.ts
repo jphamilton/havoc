@@ -1,7 +1,7 @@
 import { scene2d } from './2d';
 import { Sprite } from './sprite';
 import { Vector2 } from './vector2';
-import { random, randomf } from './util';
+import { random, randomf } from './utils/random';
 
 const asteroid1 = PIXI.Texture.fromImage('./assets/asteroid-1.png');
 

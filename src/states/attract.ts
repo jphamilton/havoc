@@ -1,5 +1,6 @@
 import { Key } from '../keys';
 import Bus from '../bus';
+import { Timers } from '../utils/timers';
 import { canvas2d, scene2d, SCREEN_WIDTH, SCREEN_HEIGHT } from '../2d';
 import { canvas3d, scene3d, camera3d } from '../3d';
 import { Title3d } from '../title3d';
@@ -9,74 +10,9 @@ import { Background } from '../background';
 import { StarField } from '../starfield';
 import { Text } from '../text';
 import { Vector2 } from '../vector2';
-import { randomf } from '../util';
-import { rumble } from '../sounds';
+import { randomf } from '../utils/random';
+import { fx1, fx2, rumble } from '../sounds';
 
-interface TimerOptions {
-    seconds: number;
-    delay?: number;
-    repeat?: boolean;
-}
-
-class Timers {
-    private timers: Timer[] = [];
-
-    add(options: TimerOptions, cb: () => void) {
-        const timer = new Timer(options);
-        timer.on(cb);
-        this.timers.push(timer);
-    }
-
-    update(dt: number) {
-        this.timers.forEach(timer => timer.update(dt));
-    }
-}
-
-class Timer {
-    
-    private repeat: boolean;
-    private time: number = 0;
-    private delay: number;
-    private delayTime: number = 0;
-    private seconds: number;
-    private triggered: boolean;
-    private cb: () => void;
-
-    constructor(options: TimerOptions) {
-        this.seconds = options.seconds;
-        this.repeat = options.repeat !== undefined ? options.repeat : true;
-        this.delay = options.delay !== undefined ? options.delay : 0;
-    }
-
-    update(dt: number) {
-        if (this.triggered) {
-            return;
-        }
-
-        if (this.delay && this.delayTime < this.delay) {
-            this.delayTime += dt;
-            if (this.delayTime > this.delay) {
-                this.cb();
-            }
-            return;
-        }
-
-        this.time += dt;
-
-        if (this.time >= this.seconds) {
-            this.time = 0;
-            this.cb();
-
-            if (!this.repeat) {
-                this.triggered = true;
-            }
-        } 
-    }
-
-    on(cb: () => void) {
-        this.cb = cb;
-    }
-}
 
 export class AttractState implements IUpdateRender {
     private background: Background;
@@ -148,6 +84,14 @@ export class AttractState implements IUpdateRender {
 
         this.timers.add({delay: 2, seconds: 10}, () => {
             rumble.play();
+        });
+
+        this.timers.add({delay: 6, seconds: 10}, () => {
+            fx1.play();
+        });
+
+        this.timers.add({delay: 10, seconds: 10}, () => {
+            fx2.play();
         });
 
         // stars!

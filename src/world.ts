@@ -3,7 +3,8 @@ import { canvas2d, scene2d, SCREEN_WIDTH, SCREEN_HEIGHT } from './2d';
 import Bus from './bus';
 import { Shader } from './shaders/0x0D';
 
-import { random, wrap, lerp } from './util';
+import { random } from './utils/random';
+import { wrap, lerp } from './util';
 import { Camera } from './camera';
 import { Background } from './background';
 import { Asteroids } from './asteroids';

@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import Bus from './bus';
 import { Sprite } from './sprite';
 import { Vector2 } from './vector2';
-import { random } from './util';
+import { random } from './utils/random';
 
 const shipBulletTexture = PIXI.Texture.fromImage('./assets/ship-bullet.png');
 

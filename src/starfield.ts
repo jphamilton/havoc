@@ -1,7 +1,7 @@
 import { scene2d } from './2d';
 import { Star } from './star';
-import { random, random_array, wrap } from './util';
-
+import { wrap } from './util';
+import { random, random_array } from './utils/random';
 
 export class StarField {
 
