@@ -11,3 +11,4 @@ Arrow keys to move
 ## Screenshots
 
 ![Sceenshot 1](https://jphamilton.github.com/havoc/assets/screenshot-1.png)
+![Sceenshot 2](https://jphamilton.github.com/havoc/assets/screenshot-2.png)

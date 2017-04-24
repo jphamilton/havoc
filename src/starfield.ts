@@ -14,16 +14,28 @@ export class StarField {
     
     constructor(private worldWidth: number, private worldHeight: number) {
         
-        this.base = PIXI.BaseTexture.fromImage('./assets/stars-16x4.png').once('update', () => {
+        const createTypes = () => {
             this.types = [
                 new PIXI.Texture(this.base, new PIXI.Rectangle(0, 0, 4, 4)),
                 new PIXI.Texture(this.base, new PIXI.Rectangle(4, 0, 4, 4)),
                 new PIXI.Texture(this.base, new PIXI.Rectangle(8, 0, 4, 4)),
                 new PIXI.Texture(this.base, new PIXI.Rectangle(12, 0, 4, 4))
             ];
+        };
 
+        this.base = PIXI.BaseTexture.fromImage('./assets/stars-16x4.png');
+
+        if (this.base.isLoading) {
+
+            this.base.on('update', () => {
+                createTypes();        
+                this.init();
+            });
+        } else {
+            createTypes();
             this.init();
-        });
+        }
+        
 
     }
 
@@ -48,6 +60,7 @@ export class StarField {
                 this.nearLayer.push(star);
             }
 
+            console.log('adding star');
             scene2d.addChild(star);
         }
     }
@@ -75,4 +88,5 @@ export class StarField {
         wrap(this.worldWidth, this.worldHeight, ...this.nearLayer);
         
     }
+    
 }

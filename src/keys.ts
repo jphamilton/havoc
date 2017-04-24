@@ -40,6 +40,10 @@ export class _Key {
         }
     }
 
+    any(): boolean {
+        return !!this.keys.find(k => k);
+    }
+    
     isPressed(key) {
         return this.prev[key] === false && this.keys[key] === true;
     }

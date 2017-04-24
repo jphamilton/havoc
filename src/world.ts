@@ -10,7 +10,7 @@ import { Asteroids } from './asteroids';
 import { StarField } from './starfield';
 import { Ship } from './ship';
 import { ShipBullet } from './shipbullet';
-import { Score } from './score';
+import { Text } from './text';
 import { HUD } from './hud';
 
 export class World implements IUpdateRender, Rect {
@@ -25,7 +25,7 @@ export class World implements IUpdateRender, Rect {
     private asteroids: Asteroids;
     private ship: Ship;
     private shipBullets: ShipBullet[] = [];
-    private score: Score;
+    private score: Text;
     private starField: StarField;
     private hud: HUD;
 
@@ -38,9 +38,7 @@ export class World implements IUpdateRender, Rect {
         // create background
         this.graphics = new PIXI.Graphics();
         this.graphics.clear();
-        
         scene2d.addChild(this.graphics);
-
         this.background = new Background(this.graphics);
 
         // create ship at the center of the world
@@ -54,7 +52,7 @@ export class World implements IUpdateRender, Rect {
         this.asteroids = new Asteroids(this.width, this.height);
 
         // score
-        this.score = new Score();
+        this.score = new Text('000000', 48);
         this.score.x = 80;
         this.score.y = 10;
 

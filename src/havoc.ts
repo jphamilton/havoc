@@ -14,6 +14,10 @@ class Havoc implements IUpdateRender {
 
     init() {
         this.state = new AttractState();
+
+        Bus.subscribe('ATTRACT_MODE_END', ()=> {
+            this.state = new GameState();
+        });
     }
 
     update(dt: number) {

@@ -4,8 +4,8 @@ import { scene3d, camera3d, canvas3d } from './3d';
 export class Title3d implements IUpdate {
 
     private title: THREE.Mesh;
-    private titleBox: any;
-    private titlePivot: any;
+    private titleBox: THREE.Box3;
+    private titlePivot: THREE.Group;
 
     constructor() {
         this.init();
@@ -35,7 +35,7 @@ export class Title3d implements IUpdate {
                 this.title.add( wireframe );
 
                 this.titleBox = new THREE.Box3().setFromObject(this.title);
-                this.titleBox.center(this.title.position);
+                this.titleBox.getCenter(this.title.position);
                 this.title.position.multiplyScalar( - 1 );
 
                 this.titlePivot = new THREE.Group();
@@ -53,5 +53,8 @@ export class Title3d implements IUpdate {
         }
     }
 
-    
+    destroy() {
+        this.title.geometry.dispose();
+        scene3d.remove(this.titlePivot);
+    }
 }

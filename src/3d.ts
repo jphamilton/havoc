@@ -22,6 +22,7 @@ function initCamera() {
 function initRenderer() {
     canvas3d = new THREE.WebGLRenderer({ antialias: true });
     canvas3d.setSize(WIDTH, HEIGHT);
+    canvas3d.setClearColor( 0x000000, 0);
 }
 
 init();

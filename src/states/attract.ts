@@ -1,11 +1,13 @@
 import { Key } from '../keys';
+import Bus from '../bus';
 import { canvas2d, scene2d, SCREEN_WIDTH, SCREEN_HEIGHT } from '../2d';
 import { canvas3d, scene3d, camera3d } from '../3d';
 import { Title3d } from '../title3d';
 import { Shader } from '../shaders/0x0D';
-import { Score } from '../score';
 import { Camera } from '../camera';
+import { Background } from '../background';
 import { StarField } from '../starfield';
+import { Text } from '../text';
 import { Vector2 } from '../vector2';
 import { randomf } from '../util';
 
@@ -33,13 +35,14 @@ class Timer {
 }
 
 export class AttractState implements IUpdateRender {
-    private score: Score;
+    private background: Background;
+    private score: Text;
     private title3d: Title3d;
     private texture3d: PIXI.Texture;
     private sprite3d: PIXI.Sprite;
     private graphics: PIXI.Graphics;
     private filter: PIXI.Filter;
-    private pushStart: PIXI.Text;
+    private pushStart: Text;
     private pushStartTimer: Timer;
     private starTimer: Timer;
     private camera2d: Camera;
@@ -64,39 +67,26 @@ export class AttractState implements IUpdateRender {
         this.sprite3d = new PIXI.Sprite(this.texture3d);
         scene2d.addChild(this.sprite3d);
 
+        // background
         this.graphics = new PIXI.Graphics();
         this.graphics.clear();
         scene2d.addChild(this.graphics);
-
-        // background
-        this.graphics.beginFill(0x001111, .5);
-        this.graphics.drawRect(0, 0, screen.width, screen.height);
-        this.graphics.endFill();
-
-        const background = new PIXI.Sprite(this.graphics.generateCanvasTexture());
-        scene2d.addChild(background);
+        this.background = new Background(this.graphics);
 
         // shader
         this.filter = new PIXI.Filter(Shader.vertex, Shader.fragment, Shader.uniforms);
         scene2d.filters = [this.filter];
 
         // score
-        this.score = new Score();
+        this.score = new Text('000000', 48);
         this.score.x = 80;
         this.score.y = 10;
 
         // push start
-        this.pushStart = new PIXI.Text('PUSH START', {
-            fontFamily : 'Hyperspace', 
-            fontSize: 64, 
-            fill : 0x005555, 
-            align : 'center'}
-        );
-
+        this.pushStart = new Text('PUSH START', 64);
         this.pushStart.y = (SCREEN_HEIGHT / 4) * 3;
         this.pushStart.x = (SCREEN_WIDTH / 2) - (this.pushStart.width / 2);
-        scene2d.addChild(this.pushStart);
-
+        
         const changeStarVector = () => {
             const angle = randomf(0, Math.PI * 2);
             this.starVector = new Vector2(Math.cos(angle), Math.sin(angle)).scale(30, 30);
@@ -130,6 +120,21 @@ export class AttractState implements IUpdateRender {
         this.title3d.update(dt);
 
         this.starField.move(this.starVector.x, this.starVector.y);
+
+        if (Key.any()) {
+            
+            this.graphics.clear();
+
+            this.title3d.destroy();
+
+            while (scene2d.children.length) {
+                scene2d.removeChild(scene2d.children[0]);
+            }
+            
+            scene2d.filters = [];
+            
+            Bus.send('ATTRACT_MODE_END');
+        }
     }
 
     render(dt: number) {
