@@ -14,7 +14,7 @@ const MAX_ACCELERATION: number = 1500;
 const MAX_BULLETS: number = 10;
 const VELOCITY = 150;
 
-const shipTexture = PIXI.Texture.fromImage('./assets/ship2.png');
+const shipTexture = PIXI.Texture.fromImage('./assets/ship.png');
 
 export class Ship extends Sprite {
 
@@ -82,7 +82,7 @@ export class Ship extends Sprite {
 
         if (hasTrails && this.trailTime <= 0) {
             this.trails.push(new WarpTrail(this));
-            this.trailTime = 0.06;
+            this.trailTime = 0.15;
         }
 
         if (this.trails.length) {

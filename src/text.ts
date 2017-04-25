@@ -22,7 +22,7 @@ export class Text {
             fontWeight: 'bold',
             fontFamily : 'Hyperspace', 
             fontSize: this.fontSize, 
-            fill : 0xFFFFFF, 
+            fill : 0x00FFFF, 
             align : 'left'}
         );
 
