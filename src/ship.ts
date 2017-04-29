@@ -14,7 +14,7 @@ const MAX_ACCELERATION: number = 1500;
 const MAX_BULLETS: number = 10;
 const VELOCITY = 150;
 
-const shipTexture = PIXI.Texture.fromImage('./assets/ship.png');
+const shipTexture = PIXI.Texture.fromImage('./assets/ship2.png');
 
 export class Ship extends Sprite {
 

@@ -15,6 +15,7 @@ class Asteroid extends Sprite {
         this.rot = random(1, 10) % 2 === 0 ? -.01 : .01;
         this.rotation = randomf(0, Math.PI * 2);
         this.velocity = new Vector2(Math.cos(this.rotation), Math.sin(this.rotation)).scale(200, 200);
+        
     }
 
     update(dt: number) {
@@ -37,9 +38,12 @@ export class Asteroids {
             this.asteroids.push(asteroid);
             scene2d.addChild(asteroid);
         }
+
     }
 
     update(dt: number) {
-        this.asteroids.forEach(a => a.update(dt));
+        this.asteroids.forEach(a => {
+            a.update(dt);
+        });
     }
 }
