@@ -18,6 +18,19 @@ function init() {
     scene2d = new PIXI.Container();
 
     document.body.appendChild(canvas2d.view);
+
+    window.addEventListener("resize", resize);
+}
+
+function resize() {
+    // Determine which screen dimension is most constrained
+    const ratio = Math.min(window.innerWidth / SCREEN_WIDTH, window.innerHeight / SCREEN_HEIGHT);
+ 
+    // Scale the view appropriately to fill that dimension
+    scene2d.scale.x = scene2d.scale.y = ratio;
+
+    // Update the renderer dimensions
+    canvas2d.resize(Math.ceil(SCREEN_WIDTH * ratio), Math.ceil(SCREEN_HEIGHT * ratio));
 }
 
 init();
