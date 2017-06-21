@@ -29,10 +29,10 @@ function getPlugins() {
 }
 
 module.exports = {  
-  entry: './src/asteroids.ts',
+  entry: './src/havoc.ts',
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'asteroids.js',
+    filename: 'havoc.js',
     publicPath: "/build/"
   },
   resolve: {
