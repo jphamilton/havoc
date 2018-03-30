@@ -21,7 +21,7 @@ export class AttractState implements IUpdateRender {
     private texture3d: PIXI.Texture;
     private sprite3d: PIXI.Sprite;
     private graphics: PIXI.Graphics;
-    private filter: PIXI.Filter;
+    private filter: PIXI.Filter<any>;
     private pushStart: Text;
     private timers: Timers;
     private camera2d: Camera;

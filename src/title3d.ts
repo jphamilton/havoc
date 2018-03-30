@@ -23,7 +23,6 @@ export class Title3d implements IUpdate {
 
                 const material = new THREE.MeshBasicMaterial( {
                     color: 0x001111, 
-                    shading: THREE.FlatShading,
                     polygonOffset: true,
                     polygonOffsetFactor: 1,
                     polygonOffsetUnits: 1

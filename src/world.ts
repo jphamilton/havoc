@@ -19,7 +19,7 @@ export class World implements IUpdateRender, Rect {
     height: number;
 
     private graphics: PIXI.Graphics;
-    private filter: PIXI.Filter;
+    private filter: PIXI.Filter<any>;
     private camera: Camera;    
     
     private background: Background;

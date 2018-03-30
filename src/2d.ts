@@ -8,7 +8,7 @@ const SCREEN_HEIGHT = window.innerHeight;
 
 function init() {
 
-    const options: PIXI.IRendererOptions = {
+    const options: PIXI.WebGLRendererOptions = {
         antialias: true,
         autoResize: true,
         resolution: 2
