@@ -11,5 +11,5 @@ CTRL to fire
 
 ## Screenshots
 
-![Sceenshot 1](https://raw.githubusercontent.com/jphamilton/havoc/assets/screenshot-1.png)
+![Sceenshot 1](https://github.com/jphamilton/havoc/blob/master/assets/screenshot-1.png)
 ![Sceenshot 2](https://raw.githubusercontent.com/jphamilton/havoc/assets/screenshot-2.png)
