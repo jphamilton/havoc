@@ -44,15 +44,15 @@ export class _Key {
         return !!this.keys.find(k => k);
     }
     
-    isPressed(key) {
+    isPressed(key: number) {
         return this.prev[key] === false && this.keys[key] === true;
     }
 
-    wasPressed(key) {
+    wasPressed(key: number) {
         return this.prev[key] && !this.keys[key];
     }
 
-    isDown(key) {
+    isDown(key: number) {
         return this.keys[key];
     }
 }

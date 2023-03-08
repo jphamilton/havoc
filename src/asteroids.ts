@@ -9,7 +9,7 @@ class Asteroid extends Sprite {
 
     private rot;
 
-    constructor(x: number, y: number, worldWidth: number, worldHeight: number, texture) {
+    constructor(x: number, y: number, worldWidth: number, worldHeight: number, texture: PIXI.Texture) {
         super(x, y, worldWidth, worldHeight, texture);
         this.alpha = .4;
         this.rot = random(1, 10) % 2 === 0 ? -.01 : .01;

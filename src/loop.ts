@@ -9,7 +9,7 @@ let last = timestamp();
 const DT = 1/60;
 const ONE_SECOND = 1000;
 
-const init = (game: IUpdateRender) => {
+const init = (game: UpdateRender) => {
 
     const frame = () => {
         now = timestamp();
@@ -30,7 +30,7 @@ const init = (game: IUpdateRender) => {
     frame();
 }
 
-export const loop = (state: IUpdateRender) => {
+export const loop = (state: UpdateRender) => {
     init(state);
 }
 

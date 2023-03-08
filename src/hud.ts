@@ -25,7 +25,7 @@ export class HUD {
         this.graphics.drawRect(this.x, this.y, 150, 150);
     }
 
-    track(obj: ISprite, color: number, alpha: number = 1) {
+    track(obj: Object2D, color: number, alpha: number = 1) {
         const mx = obj.world.x * this.mapScaleX;
         const my = obj.world.y * this.mapScaleY;
 

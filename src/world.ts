@@ -3,8 +3,7 @@ import { canvas2d, scene2d, SCREEN_WIDTH, SCREEN_HEIGHT } from './2d';
 import Bus from './bus';
 import { Shader } from './shaders/0x0D';
 
-import { random } from './utils/random';
-import { wrap, lerp } from './util';
+import { lerp } from './util';
 import { Camera } from './camera';
 import { Background } from './background';
 import { Asteroids } from './asteroids';
@@ -14,7 +13,7 @@ import { ShipBullet } from './shipbullet';
 import { Text } from './text';
 import { HUD } from './hud';
 
-export class World implements IUpdateRender, Rect {
+export class World implements UpdateRender, Rect {
     width: number;
     height: number;
 
@@ -133,14 +132,14 @@ export class World implements IUpdateRender, Rect {
         this.starField.move(delta.x, delta.y);
     }
 
-    render(dt: number) {
+    render(dt?: number) {
         const all = [this.ship,...this.shipBullets, ...this.starField.stars, ...this.asteroids.asteroids];
         
         // hide all objects
         all.forEach(obj => obj.visible = false);
 
         // what can the camera see?
-        const visible: ISprite[] = this.camera.translateToScreen(all);
+        const visible: Object2D[] = this.camera.translateToScreen(all);
         
         // show visible objects
         visible.forEach(obj => obj.visible = true);

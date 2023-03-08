@@ -8,9 +8,9 @@ export class StarField {
     stars: Star[] = [];
     private base: PIXI.BaseTexture;
     private types: PIXI.Texture[] = [];
-    private farLayer: ISprite[] = [];
-    private midLayer: ISprite[] = [];
-    private nearLayer: ISprite[] = [];
+    private farLayer: Object2D[] = [];
+    private midLayer: Object2D[] = [];
+    private nearLayer: Object2D[] = [];
     
     constructor(private worldWidth: number, private worldHeight: number) {
         

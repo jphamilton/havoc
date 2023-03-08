@@ -1,4 +1,4 @@
-export function wrap(worldWidth: number, worldHeight: number, ...args: ISprite[]) {
+export function wrap(worldWidth: number, worldHeight: number, ...args: Object2D[]) {
     
     args.forEach(o => {
         if (o.world.x > worldWidth) {

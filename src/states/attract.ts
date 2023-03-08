@@ -14,7 +14,7 @@ import { randomf } from '../utils/random';
 import { fx1, fx2, rumble } from '../sounds';
 
 
-export class AttractState implements IUpdateRender {
+export class AttractState implements UpdateRender {
     private background: Background;
     private score: Text;
     private title3d: Title3d;
@@ -127,14 +127,14 @@ export class AttractState implements IUpdateRender {
         }
     }
 
-    render(dt: number) {
+    render(dt?: number) {
         const all = [...this.starField.stars];
         
         // hide all objects
         all.forEach(obj => obj.visible = false);
 
         // what can the camera see?
-        const visible: ISprite[] = this.camera2d.translateToScreen(all);
+        const visible: Object2D[] = this.camera2d.translateToScreen(all);
         
         // show visible objects
         visible.forEach(obj => obj.visible = true);

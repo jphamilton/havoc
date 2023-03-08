@@ -15,7 +15,7 @@ export class Camera  {
     private offsetY: number;
   
 
-    following: ISprite;
+    following: Object2D;
 
     private counter = 0;
 
@@ -134,10 +134,10 @@ export class Camera  {
         return regions;
     }
 
-    translateToScreen(objects: ISprite[]): ISprite[] {
+    translateToScreen(objects: Object2D[]): Object2D[] {
         
         const regions = this.calcClipRegions();
-        const results = [];
+        const results: Object2D[] = [];
         
         regions.forEach(region => {
 

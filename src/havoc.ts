@@ -1,12 +1,13 @@
+/// <reference types="./havoc" />
 import { loop } from './loop';
 import Bus from './bus';
 import { Key } from './keys';
 import { GameState } from './states/game';
 import { AttractState } from './states/attract';
 
-class Havoc implements IUpdateRender {
+class Havoc implements UpdateRender {
 
-    private state: IUpdateRender;
+    private state: UpdateRender;
 
     constructor() {
         this.init();
@@ -24,7 +25,7 @@ class Havoc implements IUpdateRender {
         this.state.update(dt);
     }
 
-    render(dt: number) {
+    render(dt?: number) {
         this.state.render(dt);
         Key.reset();
     }
@@ -34,5 +35,8 @@ class Havoc implements IUpdateRender {
 const game = new Havoc();
 
 setTimeout(() => {
+    const audioCtx = new AudioContext();
+    audioCtx.resume();
+
     loop(game);
-}, 1000);
+}, 5000);

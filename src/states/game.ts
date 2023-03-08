@@ -2,7 +2,7 @@ import { Key } from '../keys';
 import { World } from '../world';
 
 
-export class GameState implements IUpdateRender {
+export class GameState implements UpdateRender {
 
     world: World;
     paused: boolean = false;
@@ -23,7 +23,7 @@ export class GameState implements IUpdateRender {
         this.world.update(dt);
     }
 
-    render(dt: number) {
+    render(dt?: number) {
         this.world.render(dt);
     }
 

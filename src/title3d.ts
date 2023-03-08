@@ -3,7 +3,7 @@ import { scene3d, camera3d, canvas3d } from './3d';
 
 const MAX_ROTATION = Math.PI * 2;
 
-export class Title3d implements IUpdate {
+export class Title3d implements UpdateOnly {
 
     private title: THREE.Mesh;
     private titleBox: THREE.Box3;

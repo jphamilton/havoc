@@ -1,10 +1,10 @@
 
 /* lookup tables */
 
-const RAD = {};
-const COS = {};
-const SIN = {};
-const VECTOR = {};
+const RAD: { [degree: number]: number} = {};
+const COS: { [degree: number]: number} = {};
+const SIN: { [degree: number]: number} = {};
+const VECTOR: { [degree: number]: Point} = {};
 
 const PI2 = 2 * Math.PI;
 const r = Math.PI / 180;

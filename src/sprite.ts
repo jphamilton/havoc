@@ -1,7 +1,7 @@
 import { Vector2 } from './vector2';
 import { wrap } from './util';
 
-export class Sprite extends PIXI.Sprite implements ISprite {
+export class Sprite extends PIXI.Sprite implements Object2D {
 
     world: Point;
     velocity: Vector2;
