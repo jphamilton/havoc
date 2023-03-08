@@ -35,8 +35,5 @@ class Havoc implements UpdateRender {
 const game = new Havoc();
 
 setTimeout(() => {
-    const audioCtx = new AudioContext();
-    audioCtx.resume();
-
     loop(game);
-}, 5000);
+}, 1000);
