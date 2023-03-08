@@ -3,7 +3,7 @@
 Old school space battle (work in progress)
 
 
-[You can give it a try here](https://jphamilton.github.io/havoc/)
+[You can give it a try here](https://jphamilton.github.io/havoc/build)
 
 ## Controls
 Arrow keys to move
