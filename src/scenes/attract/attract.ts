@@ -1,11 +1,11 @@
 import * as PIXI from 'pixi.js';
-import { canvas2d, scene2d, filter , SCREEN_WIDTH, SCREEN_HEIGHT } from '../2d';
-import { canvas3d, scene3d, camera3d } from '../3d';
-import { Title3d } from '../title3d';
-import { Camera } from '../camera';
-import { StarField } from '../starfield';
+import { canvas2d, scene2d, filter , SCREEN_WIDTH, SCREEN_HEIGHT } from '../../2d';
+import { canvas3d, scene3d, camera3d } from '../../3d';
+import { Title3d } from './title3d';
+import { Camera } from '../../camera';
+import { StarField } from '../../starfield';
 import { randomf, Bus, CrtBackground, Key, Text, Timers, Vector2 } from '@/utilities';
-import { fx1, fx2, rumble } from '../sounds';
+import { fx1, fx2, rumble } from '../../sounds';
 
 export class AttractState implements UpdateRender {
     private score: Text;

@@ -1,7 +1,7 @@
 /// <reference types="./havoc" />
 import { loop, Bus, Key } from '@/utilities';
-import { GameState } from './states/game';
-import { AttractState } from './states/attract';
+import { GameState } from './scenes/game';
+import { AttractState } from './scenes/attract/attract';
 
 class Havoc implements UpdateRender {
 

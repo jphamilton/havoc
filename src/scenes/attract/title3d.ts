@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { scene3d } from './3d';
+import { scene3d } from '../../3d';
 
 const MAX_ROTATION = Math.PI * 2;
 
