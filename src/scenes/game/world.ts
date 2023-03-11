@@ -1,9 +1,9 @@
 import * as PIXI from 'pixi.js';
-import { canvas2d, scene2d, filter, SCREEN_WIDTH, SCREEN_HEIGHT } from './2d';
+import { canvas2d, scene2d, filter, SCREEN_WIDTH, SCREEN_HEIGHT } from '../../2d';
 import { lerp, Bus, CrtBackground, Text } from '@/utilities';
 import { Camera } from './camera';
 import { Asteroids } from './asteroids';
-import { StarField } from './starfield';
+import { StarField } from '../../starfield';
 import { Ship } from './ship';
 import { ShipBullet } from './shipbullet';
 import { HUD } from './hud';

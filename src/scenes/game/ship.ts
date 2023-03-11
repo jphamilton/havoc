@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { scene2d } from './2d';
+import { scene2d } from '../../2d';
 import { Bus, HavocSprite, Key, Vector2 } from '@/utilities';
 import { ShipBullet } from './shipbullet';
 

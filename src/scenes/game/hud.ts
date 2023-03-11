@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from './2d';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from '../../2d';
 
 const MapWidth: number = 150;
 const MapHeight: number = 150;

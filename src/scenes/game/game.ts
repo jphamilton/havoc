@@ -1,5 +1,5 @@
 import { Key } from '@/utilities';
-import { World } from '../world';
+import { World } from './world';
 
 
 export class GameState implements UpdateRender {

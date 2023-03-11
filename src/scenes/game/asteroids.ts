@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { scene2d } from './2d';
+import { scene2d } from '../../2d';
 import { random, randomf, HavocSprite, Vector2} from '@/utilities';
 
 const asteroid1 = PIXI.Texture.from('./assets/asteroid-1.png');

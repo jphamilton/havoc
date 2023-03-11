@@ -10,12 +10,12 @@ export class HavocSprite extends PIXI.Sprite implements Object2D {
     protected worldWidth: number;
     protected worldHeight: number;
 
-    constructor(x: number, y: number, worldWidth: number, worldHeight: number, texture: PIXI.Texture) {
+    constructor(x: number, y: number, worldWidth: number, worldHeight: number, texture: PIXI.Texture, alpha: number = 1) {
         super(texture);
         this.worldWidth = worldWidth;
         this.worldHeight = worldHeight;
         this.anchor.set(0.5, 0.5);
-        
+        this.alpha = alpha;
         this.world = { x, y };
     }
 

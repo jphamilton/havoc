@@ -1,11 +1,10 @@
 import * as PIXI from 'pixi.js';
 import { scene2d } from './2d';
-import { Star } from './star';
-import { random, random_array, wrap } from '@/utilities';
+import { random, random_array, wrap, HavocSprite } from '@/utilities';
 
 export class StarField {
 
-    stars: Star[] = [];
+    stars: HavocSprite[] = [];
     private base: PIXI.BaseTexture;
     private types: PIXI.Texture[] = [];
     private farLayer: Object2D[] = [];
@@ -25,18 +24,9 @@ export class StarField {
 
         this.base = PIXI.BaseTexture.from('./assets/stars-16x4.png');
 
-        // if (this.base.isLoading) {
-
-        //     this.base.on('update', () => {
-        //         createTypes();        
-        //         this.init();
-        //     });
-        // } else {
-             createTypes();
-             this.init();
-        // }
+        createTypes();
         
-
+        this.init();
     }
 
     private init() {
@@ -48,7 +38,7 @@ export class StarField {
             const y = random(0, this.worldHeight);
             const texture = random_array(this.types);
             const alpha = random_array(alphas);
-            const star = new Star(x, y, this.worldWidth, this.worldHeight, texture, alpha);
+            const star = new HavocSprite(x, y, this.worldWidth, this.worldHeight, texture, alpha);
             
             this.stars.push(star);
 
