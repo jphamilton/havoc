@@ -1,4 +1,4 @@
-import { Key } from '../keys';
+import { Key } from '@/utilities';
 import { World } from '../world';
 
 

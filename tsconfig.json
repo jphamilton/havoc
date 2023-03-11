@@ -1,28 +1,17 @@
 {
-    "compilerOptions": {
+  "compilerOptions": {
       "target": "ESNext",
-      //"useDefineForClassFields": true,
-      "lib": [ "DOM", "DOM.Iterable", "ESNext" ],
-      "allowJs": false,
-      "skipLibCheck": true,
-      "esModuleInterop": false,
-      "allowSyntheticDefaultImports": true,
-      "strict": true,
-      "strictPropertyInitialization": false,
-      "forceConsistentCasingInFileNames": true,
       "module": "ESNext",
       "moduleResolution": "Node",
-      "resolveJsonModule": true,
-      "isolatedModules": true,
-      "noEmit": true,
+      "allowSyntheticDefaultImports": true,
+      "removeComments": true,
       "sourceMap": true,
-      "jsx": "react-jsx",
-      "baseUrl": "./src",
+      "lib": [ "DOM", "DOM.Iterable", "ESNext" ],
+      "typeRoots" : ["node_modules/pixi.js"],
+      "types" : ["pixi.js"],
       "paths": {
-        "@/*": [ "./*" ]
+        "@/*": ["./src/*"],
       },
-    },
-    "include": ["./src"],
-    "references": [{ "path": "./tsconfig.node.json" }]
+      "baseUrl": "."
   }
-  
+}

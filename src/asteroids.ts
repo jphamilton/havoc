@@ -1,11 +1,10 @@
+import * as PIXI from 'pixi.js';
 import { scene2d } from './2d';
-import { Sprite } from './sprite';
-import { Vector2 } from './vector2';
-import { random, randomf } from './utils/random';
+import { random, randomf, HavocSprite, Vector2} from '@/utilities';
 
-const asteroid1 = PIXI.Texture.fromImage('./assets/asteroid-1.png');
+const asteroid1 = PIXI.Texture.from('./assets/asteroid-1.png');
 
-class Asteroid extends Sprite {
+class Asteroid extends HavocSprite {
 
     private rot;
 

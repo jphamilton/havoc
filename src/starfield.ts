@@ -1,7 +1,7 @@
+import * as PIXI from 'pixi.js';
 import { scene2d } from './2d';
 import { Star } from './star';
-import { wrap } from './util';
-import { random, random_array } from './utils/random';
+import { random, random_array, wrap } from '@/utilities';
 
 export class StarField {
 
@@ -23,18 +23,18 @@ export class StarField {
             ];
         };
 
-        this.base = PIXI.BaseTexture.fromImage('./assets/stars-16x4.png');
+        this.base = PIXI.BaseTexture.from('./assets/stars-16x4.png');
 
-        if (this.base.isLoading) {
+        // if (this.base.isLoading) {
 
-            this.base.on('update', () => {
-                createTypes();        
-                this.init();
-            });
-        } else {
-            createTypes();
-            this.init();
-        }
+        //     this.base.on('update', () => {
+        //         createTypes();        
+        //         this.init();
+        //     });
+        // } else {
+             createTypes();
+             this.init();
+        // }
         
 
     }

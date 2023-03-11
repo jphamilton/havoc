@@ -1,7 +1,5 @@
 /// <reference types="./havoc" />
-import { loop } from './loop';
-import Bus from './bus';
-import { Key } from './keys';
+import { loop, Bus, Key } from '@/utilities';
 import { GameState } from './states/game';
 import { AttractState } from './states/attract';
 
@@ -32,8 +30,8 @@ class Havoc implements UpdateRender {
 
 }
 
-const game = new Havoc();
+const havoc = new Havoc();
 
 setTimeout(() => {
-    loop(game);
+   loop(havoc);
 }, 1000);

@@ -1,16 +1,11 @@
 import * as PIXI from 'pixi.js';
-import { canvas2d, scene2d, SCREEN_WIDTH, SCREEN_HEIGHT } from './2d';
-import Bus from './bus';
-import { Shader } from './shaders/0x0D';
-
-import { lerp } from './util';
+import { canvas2d, scene2d, filter, SCREEN_WIDTH, SCREEN_HEIGHT } from './2d';
+import { lerp, Bus, CrtBackground, Text } from '@/utilities';
 import { Camera } from './camera';
-import { Background } from './background';
 import { Asteroids } from './asteroids';
 import { StarField } from './starfield';
 import { Ship } from './ship';
 import { ShipBullet } from './shipbullet';
-import { Text } from './text';
 import { HUD } from './hud';
 
 export class World implements UpdateRender, Rect {
@@ -18,10 +13,7 @@ export class World implements UpdateRender, Rect {
     height: number;
 
     private graphics: PIXI.Graphics;
-    private filter: PIXI.Filter<any>;
     private camera: Camera;    
-    
-    private background: Background;
     private asteroids: Asteroids;
     private ship: Ship;
     private shipBullets: ShipBullet[] = [];
@@ -35,11 +27,8 @@ export class World implements UpdateRender, Rect {
         this.width = SCREEN_WIDTH * 4;
         this.height = SCREEN_HEIGHT * 4;
 
-        // create background
         this.graphics = new PIXI.Graphics();
-        this.graphics.clear();
         scene2d.addChild(this.graphics);
-        this.background = new Background(this.graphics, 0x001111, .5);
 
         // create ship at the center of the world
         this.ship = new Ship(this.width / 2, this.height / 2, this.width, this.height);
@@ -52,17 +41,12 @@ export class World implements UpdateRender, Rect {
         this.asteroids = new Asteroids(this.width, this.height);
 
         // score
-        this.score = new Text('000000', 48);
+        this.score = new Text(scene2d, '000000', 48);
         this.score.x = 80;
         this.score.y = 10;
 
         // heads up display
         this.hud = new HUD(this.graphics, this.width, this.height);
-
-        //Create our Pixi filter using our custom shader code
-        this.filter = new PIXI.Filter(Shader.vertex, Shader.fragment, Shader.uniforms);
-        
-        scene2d.filters = [this.filter];
 
         this.camera = new Camera(this.ship.world.x, this.ship.world.y, SCREEN_WIDTH, SCREEN_HEIGHT, this.width, this.height);    
         
@@ -133,6 +117,9 @@ export class World implements UpdateRender, Rect {
     }
 
     render(dt?: number) {
+        this.graphics.clear();
+        CrtBackground(this.graphics);
+        
         const all = [this.ship,...this.shipBullets, ...this.starField.stars, ...this.asteroids.asteroids];
         
         // hide all objects
@@ -145,9 +132,7 @@ export class World implements UpdateRender, Rect {
         visible.forEach(obj => obj.visible = true);
 
         // update time for CRT effect
-        this.filter.uniforms.time = this.time * 0.5;
-
-        this.graphics.clear();
+        filter.uniforms.time = this.time * 0.5;
 
         this.hud.update();
         this.hud.track(this.ship, 0x00FFFF, .5);

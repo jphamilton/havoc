@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "hyperspace";
-  src: url('assets/Hyperspace.otf');
+  font-family: "hyperspace", sans-serif;
+  src: url('assets/Hyperspace.otf') format('opentype');
 }
 
 body {

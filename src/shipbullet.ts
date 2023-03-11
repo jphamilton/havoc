@@ -1,10 +1,9 @@
 import * as PIXI from 'pixi.js';
-import Bus from './bus';
-import { Sprite } from './sprite';
+import { Bus, HavocSprite } from '@/utilities';
 
-const shipBulletTexture = PIXI.Texture.fromImage('./assets/ship-bullet.png');
+const shipBulletTexture = PIXI.Texture.from('./assets/ship-bullet.png');
 
-export class ShipBullet extends Sprite {
+export class ShipBullet extends HavocSprite {
     
     private life: number;
 

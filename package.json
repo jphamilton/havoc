@@ -1,27 +1,29 @@
 {
   "name": "havoc",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "HAVOC",
+  "main": "./src/havoc.ts",
   "scripts": {
-    "build": "vite build",
-    "preview": "vite preview",
-    "tsc": "tsc --watch --noEmit",
-    "watch": "vite serve"
+    "build": "set NODE_ENV=production&&webpack --mode=production --config webpack.config.js",
+    "watch": "set NODE_ENV=development&&webpack --mode=development --watch"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@types/howler": "^2.0.5",
-    "@types/pixi.js": "^4.7.2",
-    "@types/three": "^0.91.3",
+    "@types/fontfaceobserver": "^2.1.0",
+    "@types/howler": "^2.2.7",
+    "@types/three": "^0.149.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "file-loader": "^6.2.0",
+    "pixi.js": "^7.1.4",
+    "ts-loader": "^9.4.2",
+    "tsconfig-paths-webpack-plugin": "^4.0.1",
     "typescript": "^4.9.5",
-    "vite": "^4.1.4",
-    "vite-plugin-html": "^3.2.0"
+    "webpack": "^5.76.1",
+    "webpack-cli": "^5.0.1"
   },
   "dependencies": {
     "howler": "^2.2.3",
-    "pixi.js": "^4.7.1",
-    "three": "^0.91.0"
+    "three": "^0.150.1"
   }
 }

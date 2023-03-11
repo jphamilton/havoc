@@ -1,28 +1,39 @@
 import * as PIXI from 'pixi.js';
+import { Shader } from '@/utilities/shaders/0x0D';
+import { Bus } from '@/utilities';
 
-let canvas2d: PIXI.WebGLRenderer;
+let canvas2d: PIXI.IRenderer<PIXI.ICanvas>;
 let scene2d: PIXI.Container;
+let filter: PIXI.Filter;
 
+// initial dimensions
 const SCREEN_WIDTH = window.innerWidth;
 const SCREEN_HEIGHT = window.innerHeight;
 
 function init() {
 
-    const options: PIXI.WebGLRendererOptions = {
+    const options: Partial<PIXI.IRenderOptions> = {
         antialias: true,
-        autoResize: true,
-        resolution: 2
+        autoDensity: true,
+        width: SCREEN_WIDTH,
+        height: SCREEN_HEIGHT,
     };
 
-    canvas2d = new PIXI.WebGLRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, options);
+    canvas2d = new PIXI.Renderer(options);
+    
     scene2d = new PIXI.Container();
+    
+    // shader
+    filter = new PIXI.Filter(Shader.vertex, Shader.fragment, Shader.uniforms);
+    scene2d.filters = [filter];
 
-    document.body.appendChild(canvas2d.view);
+    document.body.appendChild(canvas2d.view as any);
 
-    window.addEventListener("resize", resize);
+    window.addEventListener("resize", onResize);
 }
 
-function resize() {
+function onResize() {
+    
     // Determine which screen dimension is most constrained
     const ratio = Math.min(window.innerWidth / SCREEN_WIDTH, window.innerHeight / SCREEN_HEIGHT);
  
@@ -31,8 +42,10 @@ function resize() {
 
     // Update the renderer dimensions
     canvas2d.resize(Math.ceil(SCREEN_WIDTH * ratio), Math.ceil(SCREEN_HEIGHT * ratio));
+
+    Bus.send(Bus.Messages.Resize, window.innerWidth, window.innerHeight);    
 }
 
 init();
 
-export { canvas2d, scene2d, SCREEN_WIDTH, SCREEN_HEIGHT }
+export { canvas2d, scene2d, filter, SCREEN_WIDTH, SCREEN_HEIGHT }

@@ -1,9 +1,7 @@
+import * as PIXI from 'pixi.js';
 import { scene2d } from './2d';
-import { Key } from './keys';
-import { Vector2 } from './vector2';
-import { Sprite } from './sprite';
+import { Bus, HavocSprite, Key, Vector2 } from '@/utilities';
 import { ShipBullet } from './shipbullet';
-import Bus from './bus';
 
 const ACCELERATION: number = 0.1;
 const BULLET_SPEED: number = 750;
@@ -14,15 +12,14 @@ const MAX_ACCELERATION: number = 1500;
 const MAX_BULLETS: number = 10;
 const VELOCITY = 150;
 
-const shipTexture = PIXI.Texture.fromImage('./assets/ship2.png');
+const shipTexture = PIXI.Texture.from('./assets/ship2.png');
 
-export class Ship extends Sprite {
+export class Ship extends HavocSprite {
 
     thrusting: boolean;
     private trails: WarpTrail[] = [];
     private trailTime: number = 0;
     private bulletTime: number = 0;
-    private width2: number;
 
     constructor(x: number, y: number, worldWidth: number, worldHeight: number) {
         super(x, y, worldWidth, worldHeight, shipTexture);
