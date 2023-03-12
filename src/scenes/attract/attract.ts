@@ -1,5 +1,4 @@
-import * as PIXI from 'pixi.js';
-import { canvas2d, SCREEN_WIDTH, SCREEN_HEIGHT } from '../../2d';
+import { canvas2d, ScreenWidth, ScreenHeight } from '../../2d';
 import { canvas3d, scene3d, camera3d } from './3d';
 import { Title3d } from './title3d';
 import { Camera } from '../game/camera';
@@ -21,6 +20,11 @@ let worldHeight: number;
 let starField: StarField;
 let starVector: Vector2;
 
+const changeStarVector = () => {
+    const angle = randomf(0, Math.PI * 2);
+    starVector = new Vector2(Math.cos(angle), Math.sin(angle)).scale(30, 30);
+}
+
 export class AttractState implements UpdateRender {
     
     constructor() {
@@ -28,8 +32,8 @@ export class AttractState implements UpdateRender {
     }
 
     private init() {
-        worldWidth = SCREEN_WIDTH * 4;
-        worldHeight = SCREEN_HEIGHT * 4;
+        worldWidth = ScreenWidth() * 4;
+        worldHeight = ScreenHeight() * 4;
 
         scene = new HavocScene();
 
@@ -37,18 +41,13 @@ export class AttractState implements UpdateRender {
 
         // push start
         insertCoin = new Text(scene, 'I N S E R T  C O I N', 64);
-        insertCoin.y = (SCREEN_HEIGHT / 4) * 3.5;
-        insertCoin.x = (SCREEN_WIDTH / 2) - (insertCoin.width / 2) - 100;
+        insertCoin.y = (ScreenHeight() / 4) * 3.5;
+        insertCoin.x = (ScreenWidth() / 2) - (insertCoin.width / 2) - 100;
 
         // score
         score = new Text(scene, '000000', 48);
         score.x = 80;
         score.y = 10;
-
-        const changeStarVector = () => {
-            const angle = randomf(0, Math.PI * 2);
-            starVector = new Vector2(Math.cos(angle), Math.sin(angle)).scale(30, 30);
-        }
 
         // timers
         timers = new Timers();
@@ -78,7 +77,7 @@ export class AttractState implements UpdateRender {
         changeStarVector();
 
         // 2d camera
-        camera2d = new Camera(worldWidth / 2, worldHeight / 2, SCREEN_WIDTH, SCREEN_HEIGHT, worldWidth, worldHeight);    
+        camera2d = new Camera(worldWidth / 2, worldHeight / 2, ScreenWidth(), ScreenHeight(), worldWidth, worldHeight);    
     }
     
     destroy() {
@@ -108,7 +107,7 @@ export class AttractState implements UpdateRender {
     }
 
     render(dt?: number) {
-        const all = [...starField.stars];
+        const all = [...starField.all];
         
         // hide all objects
         all.forEach(obj => obj.visible = false);

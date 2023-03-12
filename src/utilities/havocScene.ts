@@ -44,7 +44,4 @@ export class HavocScene extends PIXI.Container {
 
         this.filter.uniforms.time = this.time * 0.5;
     }
-
-    
-    
 }

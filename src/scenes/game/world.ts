@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { canvas2d, SCREEN_WIDTH, SCREEN_HEIGHT } from '../../2d';
+import { canvas2d, ScreenWidth, ScreenHeight } from '../../2d';
 import { lerp, Bus, HavocScene, Text } from '@/utilities';
 import { Camera } from './camera';
 import { Asteroids } from './asteroids';
@@ -24,8 +24,8 @@ export class World implements UpdateRender, Rect {
     private time: number = 0;
 
     constructor() {
-        width = SCREEN_WIDTH * 4;
-        height = SCREEN_HEIGHT * 4;
+        width = ScreenWidth() * 4;
+        height = ScreenHeight() * 4;
 
         scene = new HavocScene();
         
@@ -46,7 +46,7 @@ export class World implements UpdateRender, Rect {
         // heads up display
         hud = new HUD(scene.graphics, width, height);
 
-        camera = new Camera(ship.world.x, ship.world.y, SCREEN_WIDTH, SCREEN_HEIGHT, width, height);    
+        camera = new Camera(ship.world.x, ship.world.y, ScreenWidth(), ScreenHeight(), width, height);    
         
         // subscribe to messages
         Bus.subscribe(Bus.Messages.ShipBulletFired, (bullet:ShipBullet) => {
@@ -120,7 +120,7 @@ export class World implements UpdateRender, Rect {
         hud.update();
         hud.track(ship, 0x00FFFF, .5);
         
-        const all = [ship,...shipBullets, ...starField.stars, ...asteroids.asteroids];
+        const all = [ship,...shipBullets, ...starField.all, ...asteroids.asteroids];
         
         // hide all objects
         all.forEach(obj => obj.visible = false);
