@@ -21,7 +21,7 @@ export class HUD {
     }
 
     update() {
-        this.graphics.lineStyle(1, 0xFFFFFF, .1);
+        this.graphics.lineStyle(1, 0x00FFFF, .1);
         this.graphics.drawRect(this.x, this.y, 150, 150);
     }
 

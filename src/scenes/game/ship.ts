@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { scene2d } from '../../2d';
 import { Bus, HavocSprite, Key, Vector2 } from '@/utilities';
 import { ShipBullet } from './shipbullet';
 
@@ -21,12 +20,14 @@ export class Ship extends HavocSprite {
     private trailTime: number = 0;
     private bulletTime: number = 0;
 
-    constructor(x: number, y: number, worldWidth: number, worldHeight: number) {
+    constructor(private scene: PIXI.Container, x: number, y: number, worldWidth: number, worldHeight: number) {
         super(x, y, worldWidth, worldHeight, shipTexture);
 
         // 270°
         this.rotation = 4.71239;
         this.velocity = new Vector2(Math.cos(this.rotation), Math.sin(this.rotation));
+
+        scene.addChild(this);
     }
 
     
@@ -78,7 +79,7 @@ export class Ship extends HavocSprite {
         const hasTrails = this.thrusting && (Math.abs(this.velocity.x) > 300 || Math.abs(this.velocity.y) > 300);
 
         if (hasTrails && this.trailTime <= 0) {
-            this.trails.push(new WarpTrail(this));
+            this.trails.push(new WarpTrail(this.scene, this));
             this.trailTime = 0.15;
         }
 
@@ -162,7 +163,7 @@ export class Ship extends HavocSprite {
 }
 
 class WarpTrail extends PIXI.Sprite {
-    constructor(ship: Ship) {
+    constructor(private scene: PIXI.Container, ship: Ship) {
         super(ship.texture);
 
         this.anchor.set(0.5);
@@ -172,14 +173,15 @@ class WarpTrail extends PIXI.Sprite {
         this.scale = ship.scale;
         this.alpha = .4;
 
-        scene2d.addChild(this);
+        
+        this.scene.addChild(this);
     }
 
     update(dt: number) {
         this.alpha -= 0.01;
 
         if (this.alpha <= 0) {
-            scene2d.removeChild(this);
+            this.scene.removeChild(this);
             this.destroy();
         }
     }

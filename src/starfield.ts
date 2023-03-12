@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { scene2d } from './2d';
 import { random, random_array, wrap, HavocSprite } from '@/utilities';
 
 export class StarField {
@@ -11,7 +10,7 @@ export class StarField {
     private midLayer: Object2D[] = [];
     private nearLayer: Object2D[] = [];
     
-    constructor(private worldWidth: number, private worldHeight: number) {
+    constructor(private scene: PIXI.Container, private worldWidth: number, private worldHeight: number) {
         
         const createTypes = () => {
             this.types = [
@@ -50,7 +49,7 @@ export class StarField {
                 this.nearLayer.push(star);
             }
 
-            scene2d.addChild(star);
+            this.scene.addChild(star);
         }
     }
 

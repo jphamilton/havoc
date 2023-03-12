@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { scene2d } from '../../2d';
 import { random, randomf, HavocSprite, Vector2} from '@/utilities';
 
 const asteroid1 = PIXI.Texture.from('./assets/asteroid-1.png');
@@ -27,7 +26,7 @@ export class Asteroids {
 
     asteroids: Asteroid[] = [];
 
-    constructor(private worldWidth: number, private worldHeight: number) {
+    constructor(scene: PIXI.Container, worldWidth: number, worldHeight: number) {
 
         for(let i = 0; i < 10; i++) {
 
@@ -35,7 +34,7 @@ export class Asteroids {
             const y = random(0, worldHeight);
             const asteroid = new Asteroid(x, y, worldWidth, worldHeight, asteroid1);
             this.asteroids.push(asteroid);
-            scene2d.addChild(asteroid);
+            scene.addChild(asteroid);
         }
 
     }

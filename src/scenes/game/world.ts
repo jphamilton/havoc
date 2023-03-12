@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
-import { canvas2d, scene2d, filter, SCREEN_WIDTH, SCREEN_HEIGHT } from '../../2d';
-import { lerp, Bus, CrtBackground, Text } from '@/utilities';
+import { canvas2d, SCREEN_WIDTH, SCREEN_HEIGHT } from '../../2d';
+import { lerp, Bus, HavocScene, Text } from '@/utilities';
 import { Camera } from './camera';
 import { Asteroids } from './asteroids';
 import { StarField } from '../../starfield';
@@ -8,57 +8,55 @@ import { Ship } from './ship';
 import { ShipBullet } from './shipbullet';
 import { HUD } from './hud';
 
+let scene: HavocScene;
+let camera: Camera;    
+let asteroids: Asteroids;
+let ship: Ship;
+let shipBullets: ShipBullet[] = [];
+let score: Text;
+let starField: StarField;
+let hud: HUD;
+let width: number;
+let height: number;
+
 export class World implements UpdateRender, Rect {
-    width: number;
-    height: number;
-
-    private graphics: PIXI.Graphics;
-    private camera: Camera;    
-    private asteroids: Asteroids;
-    private ship: Ship;
-    private shipBullets: ShipBullet[] = [];
-    private score: Text;
-    private starField: StarField;
-    private hud: HUD;
-
+   
     private time: number = 0;
 
     constructor() {
-        this.width = SCREEN_WIDTH * 4;
-        this.height = SCREEN_HEIGHT * 4;
+        width = SCREEN_WIDTH * 4;
+        height = SCREEN_HEIGHT * 4;
 
-        this.graphics = new PIXI.Graphics();
-        scene2d.addChild(this.graphics);
-
+        scene = new HavocScene();
+        
         // create ship at the center of the world
-        this.ship = new Ship(this.width / 2, this.height / 2, this.width, this.height);
-        scene2d.addChild(this.ship);
+        ship = new Ship(scene, width / 2, height / 2, width, height);
 
         // stars!
-        this.starField = new StarField(this.width, this.height);
+        starField = new StarField(scene, width, height);
 
         // asteroids!
-        this.asteroids = new Asteroids(this.width, this.height);
+        asteroids = new Asteroids(scene, width, height);
 
         // score
-        this.score = new Text(scene2d, '000000', 48);
-        this.score.x = 80;
-        this.score.y = 10;
+        score = new Text(scene, '000000', 48);
+        score.x = 80;
+        score.y = 10;
 
         // heads up display
-        this.hud = new HUD(this.graphics, this.width, this.height);
+        hud = new HUD(scene.graphics, width, height);
 
-        this.camera = new Camera(this.ship.world.x, this.ship.world.y, SCREEN_WIDTH, SCREEN_HEIGHT, this.width, this.height);    
+        camera = new Camera(ship.world.x, ship.world.y, SCREEN_WIDTH, SCREEN_HEIGHT, width, height);    
         
         // subscribe to messages
         Bus.subscribe(Bus.Messages.ShipBulletFired, (bullet:ShipBullet) => {
-            this.shipBullets.push(bullet);
-            scene2d.addChild(bullet);
+            shipBullets.push(bullet);
+            scene.addChild(bullet);
         });
 
         Bus.subscribe(Bus.Messages.ShipBulletExpired, (bullet: ShipBullet) => {
-            this.shipBullets = this.shipBullets.filter(x => x !== bullet);
-            scene2d.removeChild(bullet);
+            shipBullets = shipBullets.filter(x => x !== bullet);
+            scene.removeChild(bullet);
             bullet.destroy();
         });
 
@@ -74,71 +72,68 @@ export class World implements UpdateRender, Rect {
     }
 
     get right() {
-        return this.width;
+        return width;
     }
 
     get bottom() {
-        return this.height;
+        return height;
     }
 
     update(dt: number) {
-        this.time++;
+        scene.update(dt);
 
         // move objects and stuff around the world here
-        this.ship.update(dt);
-        this.shipBullets.forEach(bullet => bullet.update(dt));
-        this.asteroids.update(dt);
+        ship.update(dt);
+        shipBullets.forEach(bullet => bullet.update(dt));
+        asteroids.update(dt);
 
         // wrap ship if necessary
-        if (this.ship.world.x > this.width) {
-            this.ship.world.x -= this.width;
-            this.camera.x -= this.width;
+        if (ship.world.x > width) {
+            ship.world.x -= width;
+            camera.x -= width;
         }
 
-        if (this.ship.world.x < 0) {
-            this.ship.world.x += this.width;
-            this.camera.x += this.width;
+        if (ship.world.x < 0) {
+            ship.world.x += width;
+            camera.x += width;
         }
 
-        if (this.ship.world.y > this.height) {
-            this.ship.world.y -= this.height;
-            this.camera.y -= this.height;
+        if (ship.world.y > height) {
+            ship.world.y -= height;
+            camera.y -= height;
         }
 
-        if (this.ship.world.y < 0) {
-            this.ship.world.y += this.height;
-            this.camera.y += this.height;
+        if (ship.world.y < 0) {
+            ship.world.y += height;
+            camera.y += height;
         }
 
         
-        const delta = this.camera.follow(this.ship.world.x, this.ship.world.y, lerp);
+        const delta = camera.follow(ship.world.x, ship.world.y, lerp);
 
-        this.starField.move(delta.x, delta.y);
+        starField.move(delta.x, delta.y);
     }
 
     render(dt?: number) {
-        this.graphics.clear();
-        CrtBackground(this.graphics);
+        // this is just to draw HUD, must be a better way.
+        scene.clearBackground();
+        hud.update();
+        hud.track(ship, 0x00FFFF, .5);
         
-        const all = [this.ship,...this.shipBullets, ...this.starField.stars, ...this.asteroids.asteroids];
+        const all = [ship,...shipBullets, ...starField.stars, ...asteroids.asteroids];
         
         // hide all objects
         all.forEach(obj => obj.visible = false);
 
         // what can the camera see?
-        const visible: Object2D[] = this.camera.translateToScreen(all);
+        const visible: Object2D[] = camera.translateToScreen(all);
         
         // show visible objects
         visible.forEach(obj => obj.visible = true);
 
-        // update time for CRT effect
-        filter.uniforms.time = this.time * 0.5;
+        asteroids.asteroids.forEach(a => hud.track(a, 0x00FFFF, .3));
 
-        this.hud.update();
-        this.hud.track(this.ship, 0x00FFFF, .5);
-        this.asteroids.asteroids.forEach(a => this.hud.track(a, 0x00FFFF, .3));
-
-        canvas2d.render(scene2d);
+        canvas2d.render(scene);
     }
 
     

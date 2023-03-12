@@ -1,5 +1,5 @@
 export { Bus } from './bus';
-export { CrtBackground } from './crtbackground';
+export { HavocScene } from './havocScene';
 export { HavocSprite } from './havocSprite';
 export { Key } from './keys';
 export { loop } from './loop';
