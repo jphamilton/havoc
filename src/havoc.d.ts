@@ -1,9 +1,9 @@
 interface UpdateOnly {
-    update: (step: number) => void;
+    update: (delta: number) => void;
 }
 
 interface UpdateRender extends UpdateOnly {
-    render: (dt?: number) => void;
+    render: (delta?: number) => void;
 }
 
 interface Point {
@@ -18,9 +18,7 @@ interface Rect {
     bottom: number;
 }
 
-interface Object2D {
-    x: number;
-    y: number;
+interface Object2D extends Point {
     visible: boolean;
     world: Point;
 }

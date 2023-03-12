@@ -1,9 +1,10 @@
 import * as PIXI from 'pixi.js';
-import { Bus } from '@/utilities';
 
 let canvas2d: PIXI.IRenderer<PIXI.ICanvas>;
 
-const ratio = window.innerWidth / window.innerHeight;
+let SCREEN_HEIGHT = window.innerHeight;
+let SCREEN_WIDTH = window.innerWidth;
+const ratio = SCREEN_WIDTH / SCREEN_HEIGHT;
 
 console.log(ratio);
 
@@ -42,12 +43,4 @@ function onResize() {
 
 init();
 
-export { canvas2d } //, SCREEN_WIDTH, SCREEN_HEIGHT }
-
-export function ScreenWidth() {
-    return window.innerWidth;
-}
-
-export function ScreenHeight() {
-    return window.innerHeight;
-}
+export { canvas2d, SCREEN_WIDTH, SCREEN_HEIGHT }

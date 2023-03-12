@@ -1,7 +1,7 @@
-import { canvas2d, ScreenWidth, ScreenHeight } from '../../2d';
+import { canvas2d, SCREEN_WIDTH, SCREEN_HEIGHT } from '../../2d';
 import { canvas3d, scene3d, camera3d } from './3d';
 import { Title3d } from './title3d';
-import { Camera } from '../game/camera';
+import { Camera2D } from '../game/camera2d';
 import { StarField } from '../../starfield';
 import { randomf, Bus, HavocScene, Key, Text, Timers, Vector2 } from '@/utilities';
 import { fx1, fx2, rumble } from '../../sounds';
@@ -12,7 +12,7 @@ let score: Text;
 let title3d: Title3d;
 let insertCoin: Text;
 let timers: Timers;
-let camera2d: Camera;
+let camera2d: Camera2D;
 let time: number = 0;
 
 let worldWidth: number;
@@ -25,15 +25,15 @@ const changeStarVector = () => {
     starVector = new Vector2(Math.cos(angle), Math.sin(angle)).scale(30, 30);
 }
 
-export class AttractState implements UpdateRender {
+export class AttractScene implements UpdateRender {
     
     constructor() {
         this.init();
     }
 
     private init() {
-        worldWidth = ScreenWidth() * 4;
-        worldHeight = ScreenHeight() * 4;
+        worldWidth = SCREEN_WIDTH * 4;
+        worldHeight = SCREEN_HEIGHT * 4;
 
         scene = new HavocScene();
 
@@ -41,8 +41,8 @@ export class AttractState implements UpdateRender {
 
         // push start
         insertCoin = new Text(scene, 'I N S E R T  C O I N', 64);
-        insertCoin.y = (ScreenHeight() / 4) * 3.5;
-        insertCoin.x = (ScreenWidth() / 2) - (insertCoin.width / 2) - 100;
+        insertCoin.y = (SCREEN_HEIGHT / 4) * 3.5;
+        insertCoin.x = (SCREEN_WIDTH / 2) - (insertCoin.width / 2);
 
         // score
         score = new Text(scene, '000000', 48);
@@ -77,7 +77,7 @@ export class AttractState implements UpdateRender {
         changeStarVector();
 
         // 2d camera
-        camera2d = new Camera(worldWidth / 2, worldHeight / 2, ScreenWidth(), ScreenHeight(), worldWidth, worldHeight);    
+        camera2d = new Camera2D(worldWidth / 2, worldHeight / 2, SCREEN_WIDTH, SCREEN_HEIGHT, worldWidth, worldHeight);    
     }
     
     destroy() {

@@ -1,7 +1,7 @@
 /// <reference types="./havoc" />
 import { loop, Bus, Key } from '@/utilities';
-import { GameState } from './scenes/game/game';
-import { AttractState } from './scenes/attract/attract';
+import { GameScene } from './scenes/game/gameScene';
+import { AttractScene } from './scenes/attract/attractScene';
 
 class Havoc implements UpdateRender {
 
@@ -12,10 +12,10 @@ class Havoc implements UpdateRender {
     }
 
     init() {
-        this.state = new AttractState();
+        this.state = new AttractScene();
 
         Bus.subscribe('ATTRACT_MODE_END', ()=> {
-            this.state = new GameState();
+            this.state = new GameScene();
         });
     }
 

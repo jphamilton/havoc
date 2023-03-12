@@ -1,6 +1,6 @@
 // The camera that follows the ship!
 
-export class Camera  {
+export class Camera2D  {
     
     // camera position (center of viewport)
     x: number;

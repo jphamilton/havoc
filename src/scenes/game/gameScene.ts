@@ -2,7 +2,7 @@ import { Key } from '@/utilities';
 import { World } from './world';
 
 
-export class GameState implements UpdateRender {
+export class GameScene implements UpdateRender {
 
     world: World;
     paused: boolean = false;

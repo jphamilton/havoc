@@ -5,7 +5,7 @@ const asteroid1 = PIXI.Texture.from('./assets/asteroid-1.png');
 
 class Asteroid extends HavocSprite {
 
-    private rot;
+    private rot: number;
 
     constructor(x: number, y: number, worldWidth: number, worldHeight: number, texture: PIXI.Texture) {
         super(x, y, worldWidth, worldHeight, texture);
@@ -24,7 +24,7 @@ class Asteroid extends HavocSprite {
 
 export class Asteroids {
 
-    asteroids: Asteroid[] = [];
+    all: Asteroid[] = [];
 
     constructor(scene: PIXI.Container, worldWidth: number, worldHeight: number) {
 
@@ -33,14 +33,14 @@ export class Asteroids {
             const x = random(0, worldWidth);
             const y = random(0, worldHeight);
             const asteroid = new Asteroid(x, y, worldWidth, worldHeight, asteroid1);
-            this.asteroids.push(asteroid);
+            this.all.push(asteroid);
             scene.addChild(asteroid);
         }
 
     }
 
     update(dt: number) {
-        this.asteroids.forEach(a => {
+        this.all.forEach(a => {
             a.update(dt);
         });
     }
